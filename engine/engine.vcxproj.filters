@@ -17,6 +17,9 @@
     <Filter Include="orign">
       <UniqueIdentifier>{bdc893fa-9360-4f4e-bc6f-2855b77195f0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\graphics\Light">
+      <UniqueIdentifier>{7a22add4-4a27-4dd0-9d33-89cb82ac7c80}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -52,6 +55,12 @@
     </ClCompile>
     <ClCompile Include="textureshaderclass.cpp">
       <Filter>Core\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="lightshaderclass.cpp">
+      <Filter>Core\graphics\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="lightclass.cpp">
+      <Filter>Core\graphics\Light</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -89,12 +98,21 @@
     <ClInclude Include="textureshaderclass.h">
       <Filter>Core\graphics</Filter>
     </ClInclude>
+    <ClInclude Include="lightshaderclass.h">
+      <Filter>Core\graphics\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="lightclass.h">
+      <Filter>Core\graphics\Light</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="color.fx">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="Texture.fx">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="light.fx">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

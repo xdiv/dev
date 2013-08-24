@@ -9,7 +9,9 @@
 //#include "model3d.h"
 #include "modelclass.h"
 //#include "colorshaderclass.h"
-#include "textureshaderclass.h"
+//#include "textureshaderclass.h"
+#include "lightshaderclass.h"
+#include "lightclass.h"
 
 // GLOBALS //
 const bool FULL_SCREEN = false;
@@ -30,14 +32,16 @@ public:
 	void switchMode(bool isFullScreen);
 
 private:
-	bool Render();
+	bool Render(float);
 
 private:
 	D3DClass* m_D3D;
 	CameraClass* m_Camera;
 	ModelClass* m_Model;
 	//ColorShaderClass* m_ColorShader;
-	TextureShaderClass* m_TextureShader;
+	//TextureShaderClass* m_TextureShader;
+	LightShaderClass* m_LightShader;
+	LightClass* m_Light;
 };
 
 #endif
