@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Models">
+      <UniqueIdentifier>{66371409-ed9c-48a8-82ac-aabc3f200591}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{0b355379-ed68-499c-a056-17d9adb64acf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\graphics">
+      <UniqueIdentifier>{34b16ec2-2998-4a2c-a70d-724707efc1b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="orign">
+      <UniqueIdentifier>{bdc893fa-9360-4f4e-bc6f-2855b77195f0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="systemclass.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="inputclass.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="d3dclass.cpp">
+      <Filter>Core\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Model3d.cpp">
+      <Filter>Models</Filter>
+    </ClCompile>
+    <ClCompile Include="Base3DModel.cpp">
+      <Filter>Models</Filter>
+    </ClCompile>
+    <ClCompile Include="graphicsclass.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="cameraclass.cpp">
+      <Filter>Core\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="colorshaderclass.cpp">
+      <Filter>Core\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="textureclass.cpp">
+      <Filter>Models</Filter>
+    </ClCompile>
+    <ClCompile Include="modelclass.cpp">
+      <Filter>orign</Filter>
+    </ClCompile>
+    <ClCompile Include="textureshaderclass.cpp">
+      <Filter>Core\graphics</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="systemclass.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="inputclass.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="d3dclass.h">
+      <Filter>Core\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Base3DModel.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Model3d.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="graphicsclass.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="cameraclass.h">
+      <Filter>Core\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="colorshaderclass.h">
+      <Filter>Core\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="textureclass.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="global.h" />
+    <ClInclude Include="modelclass.h">
+      <Filter>orign</Filter>
+    </ClInclude>
+    <ClInclude Include="textureshaderclass.h">
+      <Filter>Core\graphics</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="color.fx">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Texture.fx">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+</Project>
