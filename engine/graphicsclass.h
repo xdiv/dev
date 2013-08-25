@@ -13,6 +13,7 @@
 #include "lightshaderclass.h"
 #include "lightclass.h"
 #include "bitmapclass.h"
+#include "textclass.h"
 
 // GLOBALS //
 const bool FULL_SCREEN = false;
@@ -45,6 +46,7 @@ private:
 	LightClass* m_Light;
 
 	BitmapClass* m_Bitmap;
+	TextClass* m_Text;
 };
 
 #endif

@@ -1,6 +1,3 @@
-////////////////////////////////////////////////////////////////////////////////
-// Filename: graphicsclass.cpp
-////////////////////////////////////////////////////////////////////////////////
 #include "graphicsclass.h"
 
 
@@ -14,6 +11,7 @@ GraphicsClass::GraphicsClass()
 	m_LightShader = 0;
 	m_Light = 0;
 	m_Bitmap = 0;
+	m_Text = 0;
 }
 
 
@@ -41,7 +39,7 @@ GraphicsClass::~GraphicsClass()
 bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 {
 	bool result;
-
+	D3DXMATRIX baseViewMatrix;
 		
 	// Create the Direct3D object.
 	m_D3D = new D3DClass;
@@ -68,6 +66,7 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 
 	// Set the initial position of the camera.
 	m_Camera->SetPosition(0.0f, 0.0f, -10.0f);
+	m_Camera->Render();
 	
 	// Create the model object.
 	m_Model = new ModelClass;
@@ -75,6 +74,8 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	{
 		return false;
 	}
+
+	m_Camera->GetViewMatrix(baseViewMatrix);
 	
 	//m_Model->CreateTriangle();
 	//TextureClass * textures = new TextureClass();
@@ -168,6 +169,22 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		MessageBox(hwnd, L"Could not initialize the bitmap object.", L"Error", MB_OK);
 		return false;
 	}
+
+	// Create the text object.
+	m_Text = new TextClass;
+	if(!m_Text)
+	{
+		return false;
+	}
+
+	// Initialize the text object.
+	result = m_Text->Initialize(m_D3D->GetDevice(), hwnd, screenWidth, screenHeight, baseViewMatrix);
+	if(!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the text object.", L"Error", MB_OK);
+		return false;
+	}
+
 	return true;
 }
 
@@ -186,6 +203,13 @@ void GraphicsClass::Shutdown()
 		m_Bitmap->Shutdown();
 		delete m_Bitmap;
 		m_Bitmap = 0;
+	}
+
+	if(m_Text)
+	{
+		m_Text->Shutdown();
+		delete m_Text;
+		m_Text = 0;
 	}
 
 	// Release the color shader object.
@@ -266,20 +290,22 @@ void GraphicsClass::switchMode(bool isFullScreen)
 
 bool GraphicsClass::Render(float rotation)
 {
-	D3DXMATRIX worldMatrix, viewMatrix, projectionMatrix, orthoMatrix, staticWOrld;
+	D3DXMATRIX worldMatrix, viewMatrix, projectionMatrix, orthoMatrix;
+	D3DXMATRIX camerViewMatrix;
 	bool result;
 
 	m_D3D->TurnZBufferOn();
 	// Clear the buffers to begin the scene.
-	m_D3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
+	m_D3D->BeginScene(0.0f, 0.0f, 1.0f, 1.0f);
 	
 	// Generate the view matrix based on the camera's position.
 	m_Camera->Render();
 
 	// Get the world, view, and projection matrices from the camera and d3d objects.
 	m_Camera->GetViewMatrix(viewMatrix);
-	m_D3D->GetWorldMatrix(staticWOrld);
+	
 	m_D3D->GetWorldMatrix(worldMatrix);
+	camerViewMatrix = worldMatrix;
 	m_D3D->GetProjectionMatrix(projectionMatrix);
 	m_D3D->GetOrthoMatrix(orthoMatrix);
 	// Rotate the world matrix by the rotation value so that the triangle will spin.
@@ -305,13 +331,17 @@ bool GraphicsClass::Render(float rotation)
 
 	// Put the bitmap vertex and index buffers on the graphics pipeline to prepare them for drawing.
 	result = m_Bitmap->Render(m_D3D->GetDevice(), 100, 100);
+	// Render the text strings.
+	
+
 	if(!result)
 	{
 		return false;
 	}
 
 	// Render the bitmap using the texture shader.
-	m_TextureShader->Render(m_D3D->GetDevice(), m_Bitmap->GetIndexCount(), staticWOrld, viewMatrix, orthoMatrix, m_Bitmap->GetTexture());
+	m_TextureShader->Render(m_D3D->GetDevice(), m_Bitmap->GetIndexCount(), camerViewMatrix, viewMatrix, orthoMatrix, m_Bitmap->GetTexture());
+	m_Text->Render(m_D3D->GetDevice(), worldMatrix, orthoMatrix);
 	// Present the rendered scene to the screen.
 	m_D3D->EndScene();
 	return true;

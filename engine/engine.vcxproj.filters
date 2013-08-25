@@ -17,8 +17,8 @@
     <Filter Include="orign">
       <UniqueIdentifier>{bdc893fa-9360-4f4e-bc6f-2855b77195f0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\graphics\Light">
-      <UniqueIdentifier>{7a22add4-4a27-4dd0-9d33-89cb82ac7c80}</UniqueIdentifier>
+    <Filter Include="Core\graphics\shaders">
+      <UniqueIdentifier>{88e554a2-9ca4-4e27-9c08-bd33b59dce7d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -44,25 +44,34 @@
     <ClCompile Include="cameraclass.cpp">
       <Filter>Core\graphics</Filter>
     </ClCompile>
-    <ClCompile Include="colorshaderclass.cpp">
-      <Filter>Core\graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="textureclass.cpp">
-      <Filter>Models</Filter>
-    </ClCompile>
     <ClCompile Include="modelclass.cpp">
       <Filter>orign</Filter>
     </ClCompile>
+    <ClCompile Include="bitmapclass.cpp">
+      <Filter>orign</Filter>
+    </ClCompile>
+    <ClCompile Include="fontclass.cpp">
+      <Filter>orign</Filter>
+    </ClCompile>
+    <ClCompile Include="textureclass.cpp">
+      <Filter>orign</Filter>
+    </ClCompile>
     <ClCompile Include="textureshaderclass.cpp">
-      <Filter>Core\graphics</Filter>
+      <Filter>Core\graphics\shaders</Filter>
     </ClCompile>
     <ClCompile Include="lightshaderclass.cpp">
-      <Filter>Core\graphics\Light</Filter>
+      <Filter>Core\graphics\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="colorshaderclass.cpp">
+      <Filter>Core\graphics\shaders</Filter>
     </ClCompile>
     <ClCompile Include="lightclass.cpp">
-      <Filter>Core\graphics\Light</Filter>
+      <Filter>orign</Filter>
     </ClCompile>
-    <ClCompile Include="bitmapclass.cpp" />
+    <ClCompile Include="fontshaderclass.cpp">
+      <Filter>Core\graphics\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="textclass.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="systemclass.h">
@@ -86,26 +95,35 @@
     <ClInclude Include="cameraclass.h">
       <Filter>Core\graphics</Filter>
     </ClInclude>
-    <ClInclude Include="colorshaderclass.h">
-      <Filter>Core\graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="textureclass.h">
-      <Filter>Models</Filter>
-    </ClInclude>
     <ClInclude Include="global.h" />
     <ClInclude Include="modelclass.h">
       <Filter>orign</Filter>
     </ClInclude>
+    <ClInclude Include="bitmapclass.h">
+      <Filter>orign</Filter>
+    </ClInclude>
+    <ClInclude Include="fontclass.h">
+      <Filter>orign</Filter>
+    </ClInclude>
+    <ClInclude Include="textureclass.h">
+      <Filter>orign</Filter>
+    </ClInclude>
     <ClInclude Include="textureshaderclass.h">
-      <Filter>Core\graphics</Filter>
+      <Filter>Core\graphics\shaders</Filter>
     </ClInclude>
     <ClInclude Include="lightshaderclass.h">
-      <Filter>Core\graphics\Light</Filter>
+      <Filter>Core\graphics\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="colorshaderclass.h">
+      <Filter>Core\graphics\shaders</Filter>
     </ClInclude>
     <ClInclude Include="lightclass.h">
-      <Filter>Core\graphics\Light</Filter>
+      <Filter>orign</Filter>
     </ClInclude>
-    <ClInclude Include="bitmapclass.h" />
+    <ClInclude Include="fontshaderclass.h">
+      <Filter>Core\graphics\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="textclass.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="color.fx">
@@ -115,6 +133,9 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="light.fx">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="font.fx">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
