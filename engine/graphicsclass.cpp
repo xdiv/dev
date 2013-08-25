@@ -146,11 +146,14 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 
 	// Initialize the light object.
 	m_Light->SetAmbientColor(0.12f, 0.12f, 0.12f, 1.0f);
-	m_Light->SetDiffuseColor(1.0f, 0.0f, 0.0f, 1.0f);
+	m_Light->SetDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f);
 	m_Light->SetDirection(1.0f, 0.0f, 0.0f);
+
+	m_Light->SetDirection(0.0f, 0.0f, 1.0f);
+	m_Light->SetSpecularColor(1.0f, 0.0f, 0.0f, 1.0f);
+	m_Light->SetSpecularPower(32.0f);
 	return true;
 }
-
 
 void GraphicsClass::Shutdown()
 {
@@ -209,7 +212,6 @@ void GraphicsClass::Shutdown()
 	return;
 }
 
-
 bool GraphicsClass::Frame()
 {
 	bool result;
@@ -238,7 +240,6 @@ void GraphicsClass::switchMode(bool isFullScreen)
 	m_D3D->switchmodes(isFullScreen);
 }
 
-
 bool GraphicsClass::Render(float rotation)
 {
 	D3DXMATRIX viewMatrix, projectionMatrix, worldMatrix;
@@ -255,7 +256,7 @@ bool GraphicsClass::Render(float rotation)
 	m_D3D->GetProjectionMatrix(projectionMatrix);
 
 	// Rotate the world matrix by the rotation value so that the triangle will spin.
-	D3DXMatrixRotationY(&worldMatrix, rotation);
+	//D3DXMatrixRotationY(&worldMatrix, rotation);
 
 	// Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
 	m_Model->Render(m_D3D->GetDevice());
@@ -270,7 +271,8 @@ bool GraphicsClass::Render(float rotation)
 
 	// Render the model using the light shader.
 	m_LightShader->Render(m_D3D->GetDevice(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, m_Model->GetTexture(),
-			      m_Light->GetDirection(), m_Light->GetAmbientColor(), m_Light->GetDiffuseColor());
+			      m_Light->GetDirection(), m_Light->GetAmbientColor(), m_Light->GetDiffuseColor(), m_Camera->GetPosition(), 
+			      m_Light->GetSpecularColor(), m_Light->GetSpecularPower());
 
 	// Present the rendered scene to the screen.
 	m_D3D->EndScene();
