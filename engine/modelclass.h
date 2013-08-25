@@ -1,17 +1,12 @@
 #pragma once
 #ifndef _MODELCLASS_H_
 #define _MODELCLASS_H_
-//The TextureClass header is now included in the ModelClass header.
 
-///////////////////////
-// MY CLASS INCLUDES //
-///////////////////////
+#include <fstream>
+using namespace std;
+
 #include "textureclass.h"
 
-
-////////////////////////////////////////////////////////////////////////////////
-// Class name: ModelClass
-////////////////////////////////////////////////////////////////////////////////
 class ModelClass
 {
 private:
@@ -24,12 +19,19 @@ private:
 		D3DXVECTOR3 normal;
 	};
 
+	struct ModelType
+	{
+		float x, y, z;
+		float tu, tv;
+		float nx, ny, nz;
+	};
+
 public:
 	ModelClass();
 	ModelClass(const ModelClass&);
 	~ModelClass();
 
-	bool Initialize(ID3D10Device*, WCHAR*);
+	bool Initialize(ID3D10Device*, char*, WCHAR*);
 	void Shutdown();
 	void Render(ID3D10Device*);
 
@@ -46,6 +48,10 @@ private:
 
 	bool LoadTexture(ID3D10Device*, WCHAR*);
 	void ReleaseTexture();
+	bool LoadModel(char*);
+	void ReleaseModel();
+
+	ModelType* m_model;
 
 private:
 	ID3D10Buffer *m_vertexBuffer, *m_indexBuffer;
