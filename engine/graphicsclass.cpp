@@ -10,7 +10,7 @@ GraphicsClass::GraphicsClass()
 	m_Camera = 0;
 	m_Model = 0;
 	//m_ColorShader = 0;
-	//m_TextureShader = 0;
+	m_TextureShader = 0;
 	m_LightShader = 0;
 	m_Light = 0;
 	m_Bitmap = 0;
@@ -28,10 +28,10 @@ GraphicsClass::~GraphicsClass()
 	delete m_Model;
 	delete m_Bitmap ;
 	//delete m_ColorShader;
-	//delete m_TextureShader;
+	delete m_TextureShader;
 	m_LightShader = 0;
 	m_Light = 0;
-	//m_TextureShader = 0;
+	m_TextureShader = 0;
 	m_Bitmap = 0;
 	m_D3D = 0;
 	m_Camera = 0;
@@ -97,11 +97,12 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	{
 		return false;
 	}*/
-	/*m_TextureShader = new TextureShaderClass;
+
+	m_TextureShader = new TextureShaderClass;
 	if(!m_TextureShader)
 	{
 		return false;
-	}*/
+	}
 
 	result = m_TextureShader->Initialize(m_D3D->GetDevice(), hwnd);
 	if(!m_TextureShader)
@@ -265,7 +266,7 @@ void GraphicsClass::switchMode(bool isFullScreen)
 
 bool GraphicsClass::Render(float rotation)
 {
-	D3DXMATRIX worldMatrix, viewMatrix, projectionMatrix, orthoMatrix;
+	D3DXMATRIX worldMatrix, viewMatrix, projectionMatrix, orthoMatrix, staticWOrld;
 	bool result;
 
 	m_D3D->TurnZBufferOn();
@@ -277,14 +278,15 @@ bool GraphicsClass::Render(float rotation)
 
 	// Get the world, view, and projection matrices from the camera and d3d objects.
 	m_Camera->GetViewMatrix(viewMatrix);
+	m_D3D->GetWorldMatrix(staticWOrld);
 	m_D3D->GetWorldMatrix(worldMatrix);
 	m_D3D->GetProjectionMatrix(projectionMatrix);
 	m_D3D->GetOrthoMatrix(orthoMatrix);
 	// Rotate the world matrix by the rotation value so that the triangle will spin.
-	//D3DXMatrixRotationY(&worldMatrix, rotation);
+	D3DXMatrixRotationY(&worldMatrix, rotation);
 
 	// Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
-	//m_Model->Render(m_D3D->GetDevice());
+	m_Model->Render(m_D3D->GetDevice());
 
 	//// Render the model using the color shader.
 	//m_ColorShader->Render(m_D3D->GetDevice(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix);
@@ -295,9 +297,9 @@ bool GraphicsClass::Render(float rotation)
 	//m_TextureShader->Render(m_D3D->GetDevice(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, m_Model->GetTexture());
 
 	// Render the model using the light shader.
-	/*m_LightShader->Render(m_D3D->GetDevice(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, m_Model->GetTexture(),
+	m_LightShader->Render(m_D3D->GetDevice(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, m_Model->GetTexture(),
 			      m_Light->GetDirection(), m_Light->GetAmbientColor(), m_Light->GetDiffuseColor(), m_Camera->GetPosition(), 
-			      m_Light->GetSpecularColor(), m_Light->GetSpecularPower());*/
+			      m_Light->GetSpecularColor(), m_Light->GetSpecularPower());
 
 	m_D3D->TurnZBufferOff();
 
@@ -309,7 +311,7 @@ bool GraphicsClass::Render(float rotation)
 	}
 
 	// Render the bitmap using the texture shader.
-	m_TextureShader->Render(m_D3D->GetDevice(), m_Bitmap->GetIndexCount(), worldMatrix, viewMatrix, orthoMatrix, m_Bitmap->GetTexture());
+	m_TextureShader->Render(m_D3D->GetDevice(), m_Bitmap->GetIndexCount(), staticWOrld, viewMatrix, orthoMatrix, m_Bitmap->GetTexture());
 	// Present the rendered scene to the screen.
 	m_D3D->EndScene();
 	return true;
