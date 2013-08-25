@@ -120,6 +120,8 @@ bool ModelClass::InitializeBuffers(ID3D10Device* device)
 		indices[i] = i;
 	}
 
+
+
 	// Set up the description of the vertex buffer.
 	vertexBufferDesc.Usage = D3D10_USAGE_DEFAULT;
 	vertexBufferDesc.ByteWidth = sizeof(VertexType) * m_vertexCount;

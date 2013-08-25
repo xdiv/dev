@@ -145,8 +145,9 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	// The color of the light is set to purple and the light direction is set to point down the positive Z axis.
 
 	// Initialize the light object.
-	m_Light->SetDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f);
-	m_Light->SetDirection(0.0f, 0.0f, 1.0f);
+	m_Light->SetAmbientColor(0.12f, 0.12f, 0.12f, 1.0f);
+	m_Light->SetDiffuseColor(1.0f, 0.0f, 0.0f, 1.0f);
+	m_Light->SetDirection(1.0f, 0.0f, 0.0f);
 	return true;
 }
 
@@ -217,7 +218,7 @@ bool GraphicsClass::Frame()
 
 
 	// Update the rotation variable each frame.
-	rotation += (float)D3DX_PI * 0.01f;
+	rotation += (float)D3DX_PI * 0.005f;
 	if(rotation > 360.0f)
 	{
 		rotation -= 360.0f;
@@ -269,7 +270,7 @@ bool GraphicsClass::Render(float rotation)
 
 	// Render the model using the light shader.
 	m_LightShader->Render(m_D3D->GetDevice(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, m_Model->GetTexture(),
-			      m_Light->GetDirection(), m_Light->GetDiffuseColor());
+			      m_Light->GetDirection(), m_Light->GetAmbientColor(), m_Light->GetDiffuseColor());
 
 	// Present the rendered scene to the screen.
 	m_D3D->EndScene();

@@ -12,6 +12,7 @@ LightShaderClass::LightShaderClass()
 	m_texturePtr = 0;
 	m_lightDirectionPtr = 0;
 	m_diffuseColorPtr = 0;
+	m_ambientColorPtr = 0;
 }
 
 LightShaderClass::LightShaderClass(const LightShaderClass& other)
@@ -50,10 +51,10 @@ void LightShaderClass::Shutdown()
 // The Render function now takes in the light direction and light diffuse color as inputs. These variables are then sent into the 
 // SetShaderParameters function and finally set inside the shader itself.
 void LightShaderClass::Render(ID3D10Device* device, int indexCount, D3DXMATRIX worldMatrix, D3DXMATRIX viewMatrix, D3DXMATRIX projectionMatrix, 
-			      ID3D10ShaderResourceView* texture, D3DXVECTOR3 lightDirection, D3DXVECTOR4 diffuseColor)
+			      ID3D10ShaderResourceView* texture, D3DXVECTOR3 lightDirection, D3DXVECTOR4 ambientColor, D3DXVECTOR4 diffuseColor)
 {
 	// Set the shader parameters that it will use for rendering.
-	SetShaderParameters(worldMatrix, viewMatrix, projectionMatrix, texture, lightDirection, diffuseColor);
+	SetShaderParameters(worldMatrix, viewMatrix, projectionMatrix, texture, lightDirection, ambientColor, diffuseColor);
 
 	// Now render the prepared buffers with the shader.
 	RenderShader(device, indexCount);
@@ -160,6 +161,7 @@ bool LightShaderClass::InitializeShader(ID3D10Device* device, HWND hwnd, WCHAR* 
 	// Get pointers to the light direction and diffuse color variables inside the shader.
 	m_lightDirectionPtr = m_effect->GetVariableByName("lightDirection")->AsVector();
 	m_diffuseColorPtr = m_effect->GetVariableByName("diffuseColor")->AsVector();
+	m_ambientColorPtr = m_effect->GetVariableByName("ambientColor")->AsVector();
 
 	return true;
 }
@@ -172,6 +174,7 @@ void LightShaderClass::ShutdownShader()
 	// Release the light pointers.
 	m_lightDirectionPtr = 0;
 	m_diffuseColorPtr = 0;
+	m_ambientColorPtr = 0;
 
 	// Release the pointer to the texture in the shader file.
 	m_texturePtr = 0;
@@ -240,7 +243,8 @@ void LightShaderClass::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND h
 // The SetShaderParameters function now takes in lightDirection and diffuseColor as inputs. These variables are then set inside the shader
 // using the two new m_lightDirectionPtr and m_diffuseColorPtr pointers.
 void LightShaderClass::SetShaderParameters(D3DXMATRIX worldMatrix, D3DXMATRIX viewMatrix, D3DXMATRIX projectionMatrix, 
-					   ID3D10ShaderResourceView* texture, D3DXVECTOR3 lightDirection, D3DXVECTOR4 diffuseColor)
+					   ID3D10ShaderResourceView* texture, D3DXVECTOR3 lightDirection, D3DXVECTOR4 ambientColor, 
+					   D3DXVECTOR4 diffuseColor)
 {
 	// Set the world matrix variable inside the shader.
 	m_worldMatrixPtr->SetMatrix((float*)&worldMatrix);
@@ -256,6 +260,9 @@ void LightShaderClass::SetShaderParameters(D3DXMATRIX worldMatrix, D3DXMATRIX vi
 
 	// Set the direction of the light inside the shader.
 	m_lightDirectionPtr->SetFloatVector((float*)&lightDirection);
+
+	// Set the ambient color of the light.
+	m_ambientColorPtr->SetFloatVector((float*)&ambientColor);
 
 	// Set the diffuse color of the light inside the shader.
 	m_diffuseColorPtr->SetFloatVector((float*)&diffuseColor);
