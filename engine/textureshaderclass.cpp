@@ -28,7 +28,7 @@ bool TextureShaderClass::Initialize(ID3D10Device* device, HWND hwnd)
 
 	// The new texture.fx HLSL file is loaded for this shader.
 	// Initialize the shader that will be used to draw the triangle.
-	result = InitializeShader(device, hwnd, L"../engine/texture.fx");
+	result = InitializeShader(device, hwnd, L"../engine/Texture.fx");
 	if(!result)
 	{
 		return false;

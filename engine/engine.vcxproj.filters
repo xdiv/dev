@@ -62,6 +62,7 @@
     <ClCompile Include="lightclass.cpp">
       <Filter>Core\graphics\Light</Filter>
     </ClCompile>
+    <ClCompile Include="bitmapclass.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="systemclass.h">
@@ -104,6 +105,7 @@
     <ClInclude Include="lightclass.h">
       <Filter>Core\graphics\Light</Filter>
     </ClInclude>
+    <ClInclude Include="bitmapclass.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="color.fx">

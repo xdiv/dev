@@ -43,6 +43,8 @@ public:
 	DXGI_MODE_DESC* GetDisplayModes();
 	void GetVideoCardInfo(char*, int&);
 	void switchmodes(bool yes);
+	void TurnZBufferOn();
+	void TurnZBufferOff();
 
 private:
 	bool m_vsync_enabled;
@@ -59,6 +61,9 @@ private:
 	D3DXMATRIX m_worldMatrix;
 	D3DXMATRIX m_orthoMatrix;
 	DXGI_MODE_DESC* displayModeList;
+
+	//There is also a new depth stencil state for 2D drawing.
+	ID3D10DepthStencilState* m_depthDisabledStencilState;
 };
 
 #endif
