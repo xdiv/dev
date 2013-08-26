@@ -33,6 +33,8 @@ public:
 	void Shutdown();
 	void Render(ID3D10Device*, D3DXMATRIX, D3DXMATRIX);
 
+	bool SetMousePosition(int, int);
+
 private:
 	bool InitializeSentence(SentenceType**, int, ID3D10Device*);
 	bool UpdateSentence(SentenceType*, char*, int, int, float, float, float);

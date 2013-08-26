@@ -260,26 +260,18 @@ void GraphicsClass::Shutdown()
 	return;
 }
 
-bool GraphicsClass::Frame()
+bool GraphicsClass::Frame(int mouseX, int mouseY)
 {
 	bool result;
 
-	static float rotation = 0.0f;
-
-
-	// Update the rotation variable each frame.
-	rotation += (float)D3DX_PI * 0.005f;
-	if(rotation > 360.0f)
-	{
-		rotation -= 360.0f;
-	}
-
-	// Render the graphics scene.
-	result = Render(rotation);
+	result = m_Text->SetMousePosition(mouseX, mouseY);
 	if(!result)
 	{
 		return false;
 	}
+
+	// Set the position of the camera.
+	m_Camera->SetPosition(0.0f, 0.0f, -10.0f);
 	return true;
 }
 
@@ -288,15 +280,15 @@ void GraphicsClass::switchMode(bool isFullScreen)
 	m_D3D->switchmodes(isFullScreen);
 }
 
-bool GraphicsClass::Render(float rotation)
+bool GraphicsClass::Render()
 {
 	D3DXMATRIX worldMatrix, viewMatrix, projectionMatrix, orthoMatrix;
 	D3DXMATRIX camerViewMatrix;
-	bool result;
+	bool result = true;
 
 	m_D3D->TurnZBufferOn();
 	// Clear the buffers to begin the scene.
-	m_D3D->BeginScene(0.0f, 0.0f, 1.0f, 1.0f);
+	m_D3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
 	
 	// Generate the view matrix based on the camera's position.
 	m_Camera->Render();
@@ -305,14 +297,15 @@ bool GraphicsClass::Render(float rotation)
 	m_Camera->GetViewMatrix(viewMatrix);
 	
 	m_D3D->GetWorldMatrix(worldMatrix);
-	camerViewMatrix = worldMatrix;
+	//camerViewMatrix = worldMatrix;
 	m_D3D->GetProjectionMatrix(projectionMatrix);
 	m_D3D->GetOrthoMatrix(orthoMatrix);
 	// Rotate the world matrix by the rotation value so that the triangle will spin.
-	D3DXMatrixRotationY(&worldMatrix, rotation);
+
+	//D3DXMatrixRotationY(&worldMatrix, rotation);
 
 	// Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
-	m_Model->Render(m_D3D->GetDevice());
+	//m_Model->Render(m_D3D->GetDevice());
 
 	//// Render the model using the color shader.
 	//m_ColorShader->Render(m_D3D->GetDevice(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix);
@@ -323,24 +316,23 @@ bool GraphicsClass::Render(float rotation)
 	//m_TextureShader->Render(m_D3D->GetDevice(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, m_Model->GetTexture());
 
 	// Render the model using the light shader.
-	m_LightShader->Render(m_D3D->GetDevice(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, m_Model->GetTexture(),
+	/*m_LightShader->Render(m_D3D->GetDevice(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, m_Model->GetTexture(),
 			      m_Light->GetDirection(), m_Light->GetAmbientColor(), m_Light->GetDiffuseColor(), m_Camera->GetPosition(), 
-			      m_Light->GetSpecularColor(), m_Light->GetSpecularPower());
+			      m_Light->GetSpecularColor(), m_Light->GetSpecularPower());*/
 
 	m_D3D->TurnZBufferOff();
 
 	// Put the bitmap vertex and index buffers on the graphics pipeline to prepare them for drawing.
-	result = m_Bitmap->Render(m_D3D->GetDevice(), 100, 100);
+	/*result = m_Bitmap->Render(m_D3D->GetDevice(), 100, 100);*/
 	// Render the text strings.
-	
 
-	if(!result)
-	{
-		return false;
-	}
+	//if(!result)
+	//{
+	//	return false;
+	//}
 
 	// Render the bitmap using the texture shader.
-	m_TextureShader->Render(m_D3D->GetDevice(), m_Bitmap->GetIndexCount(), camerViewMatrix, viewMatrix, orthoMatrix, m_Bitmap->GetTexture());
+	//m_TextureShader->Render(m_D3D->GetDevice(), m_Bitmap->GetIndexCount(), camerViewMatrix, viewMatrix, orthoMatrix, m_Bitmap->GetTexture());
 	m_Text->Render(m_D3D->GetDevice(), worldMatrix, orthoMatrix);
 	// Present the rendered scene to the screen.
 	m_D3D->EndScene();

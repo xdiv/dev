@@ -71,7 +71,9 @@
     <ClCompile Include="fontshaderclass.cpp">
       <Filter>Core\graphics\shaders</Filter>
     </ClCompile>
-    <ClCompile Include="textclass.cpp" />
+    <ClCompile Include="textclass.cpp">
+      <Filter>orign</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="systemclass.h">
@@ -123,7 +125,9 @@
     <ClInclude Include="fontshaderclass.h">
       <Filter>Core\graphics\shaders</Filter>
     </ClInclude>
-    <ClInclude Include="textclass.h" />
+    <ClInclude Include="textclass.h">
+      <Filter>orign</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="color.fx">

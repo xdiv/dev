@@ -21,48 +21,6 @@ SystemClass::~SystemClass()
 {
 }
 
-
-bool SystemClass::Initialize()
-{
-	int screenWidth, screenHeight;
-	bool result;
-
-
-	// Initialize the width and height of the screen to zero before sending the variables into the function.
-	screenWidth = 0;
-	screenHeight = 0;
-
-	// Initialize the windows api.
-	InitializeWindows(screenWidth, screenHeight);
-
-	// Create the input object.  This object will be used to handle reading the keyboard input from the user.
-	m_Input = new InputClass;
-	if(!m_Input)
-	{
-		return false;
-	}
-
-	// Initialize the input object.
-	m_Input->Initialize();
-
-	// Create the graphics object.  This object will handle rendering all the graphics for this application.
-	m_Graphics = new GraphicsClass;
-	if(!m_Graphics)
-	{
-		return false;
-	}
-
-	// Initialize the graphics object.
-	result = m_Graphics->Initialize(screenWidth, screenHeight, m_hwnd);
-	if(!result)
-	{
-		return false;
-	}
-
-	return true;
-}
-
-
 void SystemClass::Shutdown()
 {
 	// Release the graphics object.
@@ -86,6 +44,53 @@ void SystemClass::Shutdown()
 	return;
 }
 
+bool SystemClass::Initialize()
+{
+	int screenWidth, screenHeight;
+	bool result;
+
+
+	// Initialize the width and height of the screen to zero before sending the variables into the function.
+	screenWidth = 0;
+	screenHeight = 0;
+
+	// Initialize the windows api.
+	InitializeWindows(screenWidth, screenHeight);
+
+	// Create the input object.  This object will be used to handle reading the keyboard input from the user.
+	m_Input = new InputClass;
+	if(!m_Input)
+	{
+		return false;
+	}
+
+	// Initialization of the Input object is now different as it requires handles to the window, instance, and the screen size variables.
+	// It also returns a boolean value to indicate if it was successful or not in starting Direct Input.
+	// Initialize the input object.
+	result = m_Input->Initialize(m_hinstance, m_hwnd, screenWidth, screenHeight);
+	if(!result)
+	{
+		MessageBox(m_hwnd, L"Could not initialize the input object.", L"Error", MB_OK);
+		return false;
+	}
+
+	// Create the graphics object.  This object will handle rendering all the graphics for this application.
+	m_Graphics = new GraphicsClass;
+	if(!m_Graphics)
+	{
+		return false;
+	}
+
+	// Initialize the graphics object.
+	result = m_Graphics->Initialize(screenWidth, screenHeight, m_hwnd);
+	if(!result)
+	{
+		return false;
+	}
+	
+	return true;
+}
+
 
 void SystemClass::Run()
 {
@@ -95,7 +100,7 @@ void SystemClass::Run()
 
 	// Initialize the message structure.
 	ZeroMemory(&msg, sizeof(MSG));
-
+	
 	// Loop until there is a quit message from the window or the user.
 	done = false;
 	while(!done)
@@ -121,32 +126,48 @@ void SystemClass::Run()
 				done = true;
 			}
 		}
+		
+		// The check for the escape key in the Run function is now done slightly different by checking the return value of the helper 
+		// function in the InputClass.
 
+		// Check if the user pressed escape and wants to quit.
+		if(m_Input->IsEscapePressed() == true)
+		{
+			done = true;
+		}
 	}
 
 	return;
 }
 
-
 bool SystemClass::Frame()
 {
 	bool result;
+	int mouseX, mouseY;
 
-
-	// Check if the user pressed escape and wants to exit the application.
-	if(m_Input->IsKeyDown(VK_ESCAPE))
+	// During the Frame function we call the Input object's own Frame function to update the states of the keyboard and mouse. This call
+	// can fail so we need to check the return value.
+	// Do the input frame processing.
+	result = m_Input->Frame();
+	if(!result)
 	{
 		return false;
 	}
-	if(m_Input->IsKeyDown(VK_F9))
-	{
-		m_Input->KeyUp(VK_F9);
-		isFullScreen = !isFullScreen;
-		m_Graphics->switchMode(isFullScreen);
-	}
+
+	// After the input device updates have been read we update the GraphicsClass with the location of the mouse so it can render that
+	// in text on the screen.
+	// Get the location of the mouse from the input object,
+	m_Input->GetMouseLocation(mouseX, mouseY);
 
 	// Do the frame processing for the graphics object.
-	result = m_Graphics->Frame();
+	result = m_Graphics->Frame(mouseX, mouseY);
+	if(!result)
+	{
+		return false;
+	}
+
+	// Finally render the graphics to the screen.
+	result = m_Graphics->Render();
 	if(!result)
 	{
 		return false;
@@ -157,30 +178,7 @@ bool SystemClass::Frame()
 
 LRESULT CALLBACK SystemClass::MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam)
 {
-	switch(umsg)
-	{
-		// Check if a key has been pressed on the keyboard.
-	case WM_KEYDOWN:
-		{
-			// If a key is pressed send it to the input object so it can record that state.
-			m_Input->KeyDown((unsigned int)wparam);
-			return 0;
-		}
-
-		// Check if a key has been released on the keyboard.
-	case WM_KEYUP:
-		{
-			// If a key is released then send it to the input object so it can unset the state for that key.
-			m_Input->KeyUp((unsigned int)wparam);
-			return 0;
-		}
-
-		// Any other messages send to the default message handler as our application won't make use of them.
-	default:
-		{
-			return DefWindowProc(hwnd, umsg, wparam, lparam);
-		}
-	}
+	return DefWindowProc(hwnd, umsg, wparam, lparam);
 }
 
 void SystemClass::InitializeWindows(int& screenWidth, int& screenHeight)
@@ -188,7 +186,6 @@ void SystemClass::InitializeWindows(int& screenWidth, int& screenHeight)
 	WNDCLASSEX wc;
 	DEVMODE dmScreenSettings;
 	int posX, posY;
-
 
 	// Get an external pointer to this object.	
 	ApplicationHandle = this;
@@ -266,7 +263,6 @@ void SystemClass::InitializeWindows(int& screenWidth, int& screenHeight)
 
 	return;
 }
-
 
 void SystemClass::ShutdownWindows()
 {
