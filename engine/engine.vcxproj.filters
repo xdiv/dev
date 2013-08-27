@@ -74,6 +74,7 @@
     <ClCompile Include="textclass.cpp">
       <Filter>orign</Filter>
     </ClCompile>
+    <ClCompile Include="soundclass.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="systemclass.h">
@@ -128,6 +129,7 @@
     <ClInclude Include="textclass.h">
       <Filter>orign</Filter>
     </ClInclude>
+    <ClInclude Include="soundclass.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="color.fx">

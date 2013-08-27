@@ -32,7 +32,7 @@ public:
 	bool Initialize(ID3D10Device*, HWND, int, int, D3DXMATRIX);
 	void Shutdown();
 	void Render(ID3D10Device*, D3DXMATRIX, D3DXMATRIX);
-
+	bool AddWord(char * text, int x, int y, float r, float g, float b );
 	bool SetMousePosition(int, int);
 
 private:
@@ -46,6 +46,7 @@ private:
 	FontShaderClass* m_FontShader;
 	int m_screenWidth, m_screenHeight;
 	D3DXMATRIX m_baseViewMatrix;
+	ID3D10Device * m_d3d;
 
 	// We will use two sentences in this tutorial.
 

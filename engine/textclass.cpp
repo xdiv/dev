@@ -21,7 +21,7 @@ bool TextClass::Initialize(ID3D10Device* device, HWND hwnd, int screenWidth, int
 {
 	bool result;
 	//Store the screen size and the base view matrix, these will be used for rendering 2D text.
-
+	m_d3d = device;
 	// Store the screen width and height.
 	m_screenWidth = screenWidth;
 	m_screenHeight = screenHeight;
@@ -92,6 +92,25 @@ bool TextClass::Initialize(ID3D10Device* device, HWND hwnd, int screenWidth, int
 	}
 
 	return true;
+}
+
+bool TextClass::AddWord(char * text, int x, int y, float r, float g, float b )
+{
+	bool result;
+	// Initialize the first sentence.
+	result = InitializeSentence(&m_sentence2, 16, m_d3d);
+	if(!result)
+	{
+		return false;
+	}
+
+	// Now update the sentence vertex buffer with the new string information.
+	result = UpdateSentence(m_sentence2, text, x, y, r, g, b);
+	if(!result)
+	{
+		return false;
+	}
+	return result;
 }
 
 // The Shutdown function will release the two sentences, the font object, and the font shader object.

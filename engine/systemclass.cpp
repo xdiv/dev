@@ -9,6 +9,7 @@ SystemClass::SystemClass()
 	m_Input = 0;
 	m_Graphics = 0;
 	isFullScreen = FULL_SCREEN;
+	m_Sound = 0;
 }
 
 
@@ -36,6 +37,14 @@ void SystemClass::Shutdown()
 	{
 		delete m_Input;
 		m_Input = 0;
+	}
+
+	// Release the graphics object.
+	if(m_Graphics)
+	{
+		m_Graphics->Shutdown();
+		delete m_Graphics;
+		m_Graphics = 0;
 	}
 
 	// Shutdown the window.
@@ -85,6 +94,21 @@ bool SystemClass::Initialize()
 	result = m_Graphics->Initialize(screenWidth, screenHeight, m_hwnd);
 	if(!result)
 	{
+		return false;
+	}
+
+	// Create the sound object.
+	m_Sound = new SoundClass;
+	if(!m_Sound)
+	{
+		return false;
+	}
+ 
+	// Initialize the sound object.
+	result = m_Sound->Initialize(m_hwnd);
+	if(!result)
+	{
+		MessageBox(m_hwnd, L"Could not initialize Direct Sound.", L"Error", MB_OK);
 		return false;
 	}
 	
