@@ -8,12 +8,13 @@
 
 #include <windows.h>
 
-
 #include "inputclass.h"
 #include "graphicsclass.h"
 #include "soundclass.h"
 
-
+#include "fpsclass.h"
+#include "cpuclass.h"
+#include "timerclass.h"
 
 class SystemClass
 {
@@ -43,8 +44,11 @@ private:
 	GraphicsClass* m_Graphics;
 
 	SoundClass* m_Sound;
-};
 
+	FpsClass* m_Fps;
+	CpuClass* m_Cpu;
+	TimerClass* m_Timer;
+};
 
 // FUNCTION PROTOTYPES //
 static LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);

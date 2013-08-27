@@ -1,6 +1,3 @@
-////////////////////////////////////////////////////////////////////////////////
-// Filename: systemclass.cpp
-////////////////////////////////////////////////////////////////////////////////
 #include "systemclass.h"
 
 
@@ -10,13 +7,15 @@ SystemClass::SystemClass()
 	m_Graphics = 0;
 	isFullScreen = FULL_SCREEN;
 	m_Sound = 0;
-}
 
+	m_Fps = 0;
+	m_Cpu = 0;
+	m_Timer = 0;
+}
 
 SystemClass::SystemClass(const SystemClass& other)
 {
 }
-
 
 SystemClass::~SystemClass()
 {
@@ -111,6 +110,44 @@ bool SystemClass::Initialize()
 		MessageBox(m_hwnd, L"Could not initialize Direct Sound.", L"Error", MB_OK);
 		return false;
 	}
+
+	//Create and initialize the FpsClass.
+	// Create the fps object.
+	m_Fps = new FpsClass;
+	if(!m_Fps)
+	{
+		return false;
+	}
+
+	// Initialize the fps object.
+	m_Fps->Initialize();
+
+	//Create and initialize the CpuClass.
+	// Create the cpu object.
+	m_Cpu = new CpuClass;
+	if(!m_Cpu)
+	{
+		return false;
+	}
+
+	// Initialize the cpu object.
+	m_Cpu->Initialize();
+
+	//Create and initialize the TimerClass.
+	// Create the timer object.
+	m_Timer = new TimerClass;
+	if(!m_Timer)
+	{
+		return false;
+	}
+
+	// Initialize the timer object.
+	result = m_Timer->Initialize();
+	if(!result)
+	{
+		MessageBox(m_hwnd, L"Could not initialize the Timer object.", L"Error", MB_OK);
+		return false;
+	}
 	
 	return true;
 }
@@ -184,7 +221,9 @@ bool SystemClass::Frame()
 	m_Input->GetMouseLocation(mouseX, mouseY);
 
 	// Do the frame processing for the graphics object.
-	result = m_Graphics->Frame(mouseX, mouseY);
+	m_Fps->Frame(); m_Fps->Frame(); m_Cpu->Frame();
+	result = m_Graphics->ShowDebugInfo(mouseX, mouseY, m_Fps->GetFps(), m_Cpu->GetCpuPercentage(), m_Timer->GetTime());
+	//result = m_Graphics->Frame(mouseX, mouseY);
 	if(!result)
 	{
 		return false;
@@ -309,6 +348,28 @@ void SystemClass::ShutdownWindows()
 
 	// Release the pointer to this class.
 	ApplicationHandle = NULL;
+
+	// Release the timer object.
+	if(m_Timer)
+	{
+		delete m_Timer;
+		m_Timer = 0;
+	}
+
+	// Release the cpu object.
+	if(m_Cpu)
+	{
+		m_Cpu->Shutdown();
+		delete m_Cpu;
+		m_Cpu = 0;
+	}
+
+	// Release the fps object.
+	if(m_Fps)
+	{
+		delete m_Fps;
+		m_Fps = 0;
+	}
 
 	return;
 }

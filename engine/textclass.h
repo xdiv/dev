@@ -35,6 +35,10 @@ public:
 	bool AddWord(char * text, int x, int y, float r, float g, float b );
 	bool SetMousePosition(int, int);
 
+	bool SetFps(int);
+	bool SetCpu(int);
+	bool SetTime(float);
+
 private:
 	bool InitializeSentence(SentenceType**, int, ID3D10Device*);
 	bool UpdateSentence(SentenceType*, char*, int, int, float, float, float);

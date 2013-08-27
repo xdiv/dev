@@ -71,11 +71,11 @@ bool TextClass::Initialize(ID3D10Device* device, HWND hwnd, int screenWidth, int
 	}
 
 	// Now update the sentence vertex buffer with the new string information.
-	result = UpdateSentence(m_sentence1, "Hello", 100, 100, 1.0f, 1.0f, 1.0f);
+	/*result = UpdateSentence(m_sentence1, "Hello", 100, 100, 1.0f, 1.0f, 1.0f);
 	if(!result)
 	{
 		return false;
-	}
+	}*/
 
 	// Initialize the first sentence.
 	result = InitializeSentence(&m_sentence2, 16, device);
@@ -85,11 +85,11 @@ bool TextClass::Initialize(ID3D10Device* device, HWND hwnd, int screenWidth, int
 	}
 
 	// Now update the sentence vertex buffer with the new string information.
-	result = UpdateSentence(m_sentence2, "Goodbye", 100, 200, 1.0f, 1.0f, 0.0f);
+	/*result = UpdateSentence(m_sentence2, "Goodbye", 100, 200, 1.0f, 1.0f, 0.0f);
 	if(!result)
 	{
 		return false;
-	}
+	}*/
 
 	return true;
 }
@@ -398,7 +398,7 @@ bool TextClass::SetMousePosition(int mouseX, int mouseY)
 	strcat_s(mouseString, tempString);
 
 	// Update the sentence vertex buffer with the new string information.
-	result = UpdateSentence(m_sentence1, mouseString, 20, 20, 1.0f, 1.0f, 1.0f);
+	result = UpdateSentence(m_sentence1, mouseString, 5, 20, 1.0f, 1.0f, 1.0f);
 	if(!result)
 	{
 		return false;
@@ -412,7 +412,113 @@ bool TextClass::SetMousePosition(int mouseX, int mouseY)
 	strcat_s(mouseString, tempString);
 
 	// Update the sentence vertex buffer with the new string information.
-	result = UpdateSentence(m_sentence2, mouseString, 20, 40, 1.0f, 1.0f, 1.0f);
+	result = UpdateSentence(m_sentence2, mouseString, 5, 40, 1.0f, 1.0f, 1.0f);
+	if(!result)
+	{
+		return false;
+	}
+
+	return true;
+}
+
+bool TextClass::SetFps(int fps)
+{
+	char tempString[16];
+	char fpsString[16];
+	float red, green, blue;
+	bool result;
+
+
+	// Truncate the fps to below 10,000.
+	if(fps > 9999)
+	{
+		fps = 9999;
+	}
+
+	// Convert the fps integer to string format.
+	_itoa_s(fps, tempString, 10);
+
+	// Setup the fps string.
+	strcpy_s(fpsString, "Fps: ");
+	strcat_s(fpsString, tempString);
+
+	// If fps is 60 or above set the fps color to green.
+	if(fps >= 60)
+	{
+		red = 0.0f;
+		green = 1.0f;
+		blue = 0.0f;
+	}
+
+	// If fps is below 60 set the fps color to yellow.
+	if(fps < 60)
+	{
+		red = 1.0f;
+		green = 1.0f;
+		blue = 0.0f;
+	}
+
+	// If fps is below 30 set the fps color to red.
+	if(fps < 30)
+	{
+		red = 1.0f;
+		green = 0.0f;
+		blue = 0.0f;
+	}
+
+	// Update the sentence vertex buffer with the new string information.
+	result = UpdateSentence(m_sentence1, fpsString, 90, 20, red, green, blue);
+	if(!result)
+	{
+		return false;
+	}
+
+	return true;
+}
+
+bool TextClass::SetTime(float cpu)
+{
+	char tempString[20];
+	char cpuString[20];
+	bool result;
+
+
+	// Convert the cpu integer to string format.
+	sprintf(tempString,"%f", sprintf);
+
+	// Setup the cpu string.
+	strcpy_s(cpuString, "time: ");
+	strcat_s(cpuString, tempString);
+	strcat_s(cpuString, "ms");
+
+	// Update the sentence vertex buffer with the new string information.
+	result = UpdateSentence(m_sentence2, cpuString, 90, 40, 0.0f, 1.0f, 0.0f);
+	if(!result)
+	{
+		return false;
+	}
+
+	return true;
+}
+
+//The SetCpu function is similar to the SetFps function. It takes the cpu value and converts it to a string which is then stored in the sentence structure and rendered.
+bool TextClass::SetCpu(int cpu)
+{
+	char tempString[16];
+	char cpuString[16];
+	bool result;
+
+
+	// Convert the cpu integer to string format.
+	_itoa_s(cpu, tempString, 10);
+
+	// Setup the cpu string.
+	strcpy_s(cpuString, "Cpu: ");
+	strcat_s(cpuString, tempString);
+	strcat_s(cpuString, "%");
+
+	// Update the sentence vertex buffer with the new string information.
+	result = UpdateSentence(m_sentence1, cpuString, 150, 20, 0.0f, 1.0f, 0.0f);
 	if(!result)
 	{
 		return false;

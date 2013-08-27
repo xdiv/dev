@@ -17,7 +17,7 @@
 
 // GLOBALS //
 const bool FULL_SCREEN = false;
-const bool VSYNC_ENABLED = true;
+const bool VSYNC_ENABLED = false;
 const float SCREEN_DEPTH = 1000.0f;
 const float SCREEN_NEAR = 0.1f;
 
@@ -33,6 +33,7 @@ public:
 	bool Frame(int , int);
 	void switchMode(bool isFullScreen);
 
+	bool ShowDebugInfo(int ,int ,int ,int , float);
 	bool Render();
 
 private:
@@ -45,7 +46,9 @@ private:
 	LightClass* m_Light;
 
 	BitmapClass* m_Bitmap;
-	TextClass* m_Text;
+	TextClass* m_MouseDebugInfo;
+	TextClass* m_ProcesorInfo;
+	TextClass* m_RenderInfo;
 };
 
 #endif

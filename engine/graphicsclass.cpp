@@ -11,7 +11,7 @@ GraphicsClass::GraphicsClass()
 	m_LightShader = 0;
 	m_Light = 0;
 	m_Bitmap = 0;
-	m_Text = 0;
+	m_MouseDebugInfo = 0;
 }
 
 
@@ -171,17 +171,44 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	}
 
 	// Create the text object.
-	m_Text = new TextClass;
-	if(!m_Text)
+	m_MouseDebugInfo = new TextClass;
+	if(!m_MouseDebugInfo)
 	{
 		return false;
 	}
 
 	// Initialize the text object.
-	result = m_Text->Initialize(m_D3D->GetDevice(), hwnd, screenWidth, screenHeight, baseViewMatrix);
+	result = m_MouseDebugInfo->Initialize(m_D3D->GetDevice(), hwnd, screenWidth, screenHeight, baseViewMatrix);
 	if(!result)
 	{
-		MessageBox(hwnd, L"Could not initialize the text object.", L"Error", MB_OK);
+		MessageBox(hwnd, L"Could not initialize the text object(m_MouseDebugInfo).", L"Error", MB_OK);
+		return false;
+	}
+
+	m_ProcesorInfo = new TextClass;
+	if(!m_MouseDebugInfo)
+	{
+		return false;
+	}
+
+	// Initialize the text object.
+	result = m_ProcesorInfo->Initialize(m_D3D->GetDevice(), hwnd, screenWidth, screenHeight, baseViewMatrix);
+	if(!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the text object(m_ProcesorInfo).", L"Error", MB_OK);
+		return false;
+	}
+	m_RenderInfo = new TextClass;
+	if(!m_MouseDebugInfo)
+	{
+		return false;
+	}
+
+	// Initialize the text object.
+	result = m_RenderInfo->Initialize(m_D3D->GetDevice(), hwnd, screenWidth, screenHeight, baseViewMatrix);
+	if(!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the text object(m_RenderInfo).", L"Error", MB_OK);
 		return false;
 	}
 
@@ -205,11 +232,11 @@ void GraphicsClass::Shutdown()
 		m_Bitmap = 0;
 	}
 
-	if(m_Text)
+	if(m_MouseDebugInfo)
 	{
-		m_Text->Shutdown();
-		delete m_Text;
-		m_Text = 0;
+		m_MouseDebugInfo->Shutdown();
+		delete m_MouseDebugInfo;
+		m_MouseDebugInfo = 0;
 	}
 
 	// Release the color shader object.
@@ -264,15 +291,47 @@ bool GraphicsClass::Frame(int mouseX, int mouseY)
 {
 	bool result;
 
-	result = m_Text->SetMousePosition(mouseX, mouseY);
+	result = m_MouseDebugInfo->SetMousePosition(mouseX, mouseY);
 	if(!result)
 	{
 		return false;
 	}
 
 	// Set the position of the camera.
-	m_Camera->SetPosition(0.0f, 0.0f, -10.0f);
+	
 	return true;
+}
+
+bool GraphicsClass::ShowDebugInfo(int mouseX,int mouseY,int fps,int cpuUsageInPerc, float time)
+{
+	bool result = true;
+
+	result = m_MouseDebugInfo->SetMousePosition(mouseX, mouseY);
+	if(!result)
+	{
+		return false;
+	}
+	result = m_RenderInfo->SetFps(fps);
+	if(!result)
+	{
+		return false;
+	}
+
+	result = m_RenderInfo->SetTime(fps);
+	if(!result)
+	{
+		return false;
+	}
+
+	// Set the cpu usage.
+	result = m_ProcesorInfo->SetCpu(cpuUsageInPerc);
+	if(!result)
+	{
+		return false;
+	}
+
+
+	return result;
 }
 
 void GraphicsClass::switchMode(bool isFullScreen)
@@ -287,6 +346,7 @@ bool GraphicsClass::Render()
 	bool result = true;
 
 	m_D3D->TurnZBufferOn();
+	m_Camera->SetPosition(0.0f, 0.0f, -10.0f);
 	// Clear the buffers to begin the scene.
 	m_D3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
 	
@@ -333,7 +393,9 @@ bool GraphicsClass::Render()
 
 	// Render the bitmap using the texture shader.
 	//m_TextureShader->Render(m_D3D->GetDevice(), m_Bitmap->GetIndexCount(), camerViewMatrix, viewMatrix, orthoMatrix, m_Bitmap->GetTexture());
-	m_Text->Render(m_D3D->GetDevice(), worldMatrix, orthoMatrix);
+	m_MouseDebugInfo->Render(m_D3D->GetDevice(), worldMatrix, orthoMatrix);
+	m_ProcesorInfo->Render(m_D3D->GetDevice(), worldMatrix, orthoMatrix);
+	m_RenderInfo->Render(m_D3D->GetDevice(), worldMatrix, orthoMatrix);
 	// Present the rendered scene to the screen.
 	m_D3D->EndScene();
 	return true;
