@@ -6,10 +6,7 @@
 #include <windows.h>
 #include "d3dclass.h"
 #include "cameraclass.h"
-//#include "model3d.h"
 #include "modelclass.h"
-//#include "colorshaderclass.h"
-#include "textureshaderclass.h"
 #include "lightshaderclass.h"
 #include "lightclass.h"
 #include "bitmapclass.h"
@@ -40,8 +37,6 @@ private:
 	D3DClass* m_D3D;
 	CameraClass* m_Camera;
 	ModelClass* m_Model;
-	//ColorShaderClass* m_ColorShader;
-	TextureShaderClass* m_TextureShader;
 	LightShaderClass* m_LightShader;
 	LightClass* m_Light;
 

@@ -5,23 +5,20 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Models">
-      <UniqueIdentifier>{66371409-ed9c-48a8-82ac-aabc3f200591}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core">
       <UniqueIdentifier>{0b355379-ed68-499c-a056-17d9adb64acf}</UniqueIdentifier>
     </Filter>
     <Filter Include="Core\graphics">
       <UniqueIdentifier>{34b16ec2-2998-4a2c-a70d-724707efc1b9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="orign">
-      <UniqueIdentifier>{bdc893fa-9360-4f4e-bc6f-2855b77195f0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core\graphics\shaders">
       <UniqueIdentifier>{88e554a2-9ca4-4e27-9c08-bd33b59dce7d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Core\system">
       <UniqueIdentifier>{27eaac88-1251-4901-8d6f-cdc74b8c2624}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Models">
+      <UniqueIdentifier>{bdc893fa-9360-4f4e-bc6f-2855b77195f0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -32,12 +29,6 @@
     <ClCompile Include="d3dclass.cpp">
       <Filter>Core\graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Model3d.cpp">
-      <Filter>Models</Filter>
-    </ClCompile>
-    <ClCompile Include="Base3DModel.cpp">
-      <Filter>Models</Filter>
-    </ClCompile>
     <ClCompile Include="graphicsclass.cpp">
       <Filter>Core</Filter>
     </ClCompile>
@@ -45,34 +36,28 @@
       <Filter>Core\graphics</Filter>
     </ClCompile>
     <ClCompile Include="modelclass.cpp">
-      <Filter>orign</Filter>
+      <Filter>Models</Filter>
     </ClCompile>
     <ClCompile Include="bitmapclass.cpp">
-      <Filter>orign</Filter>
+      <Filter>Models</Filter>
     </ClCompile>
     <ClCompile Include="fontclass.cpp">
-      <Filter>orign</Filter>
+      <Filter>Models</Filter>
     </ClCompile>
     <ClCompile Include="textureclass.cpp">
-      <Filter>orign</Filter>
-    </ClCompile>
-    <ClCompile Include="textureshaderclass.cpp">
-      <Filter>Core\graphics\shaders</Filter>
+      <Filter>Models</Filter>
     </ClCompile>
     <ClCompile Include="lightshaderclass.cpp">
       <Filter>Core\graphics\shaders</Filter>
     </ClCompile>
-    <ClCompile Include="colorshaderclass.cpp">
-      <Filter>Core\graphics\shaders</Filter>
-    </ClCompile>
     <ClCompile Include="lightclass.cpp">
-      <Filter>orign</Filter>
+      <Filter>Models</Filter>
     </ClCompile>
     <ClCompile Include="fontshaderclass.cpp">
       <Filter>Core\graphics\shaders</Filter>
     </ClCompile>
     <ClCompile Include="textclass.cpp">
-      <Filter>orign</Filter>
+      <Filter>Models</Filter>
     </ClCompile>
     <ClCompile Include="inputclass.cpp">
       <Filter>Core\system</Filter>
@@ -97,12 +82,6 @@
     <ClInclude Include="d3dclass.h">
       <Filter>Core\graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Base3DModel.h">
-      <Filter>Models</Filter>
-    </ClInclude>
-    <ClInclude Include="Model3d.h">
-      <Filter>Models</Filter>
-    </ClInclude>
     <ClInclude Include="graphicsclass.h">
       <Filter>Core</Filter>
     </ClInclude>
@@ -111,34 +90,28 @@
     </ClInclude>
     <ClInclude Include="global.h" />
     <ClInclude Include="modelclass.h">
-      <Filter>orign</Filter>
+      <Filter>Models</Filter>
     </ClInclude>
     <ClInclude Include="bitmapclass.h">
-      <Filter>orign</Filter>
+      <Filter>Models</Filter>
     </ClInclude>
     <ClInclude Include="fontclass.h">
-      <Filter>orign</Filter>
+      <Filter>Models</Filter>
     </ClInclude>
     <ClInclude Include="textureclass.h">
-      <Filter>orign</Filter>
-    </ClInclude>
-    <ClInclude Include="textureshaderclass.h">
-      <Filter>Core\graphics\shaders</Filter>
+      <Filter>Models</Filter>
     </ClInclude>
     <ClInclude Include="lightshaderclass.h">
       <Filter>Core\graphics\shaders</Filter>
     </ClInclude>
-    <ClInclude Include="colorshaderclass.h">
-      <Filter>Core\graphics\shaders</Filter>
-    </ClInclude>
     <ClInclude Include="lightclass.h">
-      <Filter>orign</Filter>
+      <Filter>Models</Filter>
     </ClInclude>
     <ClInclude Include="fontshaderclass.h">
       <Filter>Core\graphics\shaders</Filter>
     </ClInclude>
     <ClInclude Include="textclass.h">
-      <Filter>orign</Filter>
+      <Filter>Models</Filter>
     </ClInclude>
     <ClInclude Include="inputclass.h">
       <Filter>Core\system</Filter>

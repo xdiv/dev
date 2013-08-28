@@ -6,8 +6,6 @@ GraphicsClass::GraphicsClass()
 	m_D3D = 0;
 	m_Camera = 0;
 	m_Model = 0;
-	//m_ColorShader = 0;
-	m_TextureShader = 0;
 	m_LightShader = 0;
 	m_Light = 0;
 	m_Bitmap = 0;
@@ -25,11 +23,8 @@ GraphicsClass::~GraphicsClass()
 	delete m_Camera;
 	delete m_Model;
 	delete m_Bitmap ;
-	//delete m_ColorShader;
-	delete m_TextureShader;
 	m_LightShader = 0;
 	m_Light = 0;
-	m_TextureShader = 0;
 	m_Bitmap = 0;
 	m_D3D = 0;
 	m_Camera = 0;
@@ -77,13 +72,6 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 
 	m_Camera->GetViewMatrix(baseViewMatrix);
 	
-	//m_Model->CreateTriangle();
-	//TextureClass * textures = new TextureClass();
-	////textures->Initialize(m_D3D->GetDevice(), L"../engine/data/black.dds");
-	//textures->Initialize(m_D3D->GetDevice(), L"C:/git/engine/engine/seafloor.dds");
-
-	//m_Model->SetTexture(textures);
-	//// Initialize the model object.
 	result = m_Model->Initialize(m_D3D->GetDevice(), "../Engine/data/cube.txt", L"../Engine/data/seafloor.dds");
 	if(!result)
 	{
@@ -92,35 +80,8 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		return false;
 	}
 
-	// Create the color shader object.
-	/*m_ColorShader = new ColorShaderClass;
-	if(!m_ColorShader)
-	{
-		return false;
-	}*/
 
-	m_TextureShader = new TextureShaderClass;
-	if(!m_TextureShader)
-	{
-		return false;
-	}
 
-	result = m_TextureShader->Initialize(m_D3D->GetDevice(), hwnd);
-	if(!m_TextureShader)
-	{
-		MessageBox(hwnd, L"Could not initialize the TextureShaderClass object.", L"Error", MB_OK);
-		throw exception();
-		return false;
-	}
-
-	// Initialize the color shader object.
-	/*result = m_ColorShader->Initialize(m_D3D->GetDevice(), hwnd);
-	if(!result)
-	{
-		MessageBox(hwnd, L"Could not initialize the color shader object.", L"Error", MB_OK);
-		throw exception();
-		return false;
-	}*/
 
 	// Create the light shader object.
 	m_LightShader = new LightShaderClass;
@@ -239,21 +200,6 @@ void GraphicsClass::Shutdown()
 		m_MouseDebugInfo = 0;
 	}
 
-	// Release the color shader object.
-	/*if(m_ColorShader)
-	{
-		m_ColorShader->Shutdown();
-		delete m_ColorShader;
-		m_ColorShader = 0;
-	}*/
-	// Release the texture shader object.
-	if(m_TextureShader)
-	{
-		m_TextureShader->Shutdown();
-		delete m_TextureShader;
-		m_TextureShader = 0;
-	}
-
 	// Release the light object.
 	if(m_Light)
 	{
@@ -345,58 +291,28 @@ bool GraphicsClass::Render()
 	D3DXMATRIX camerViewMatrix;
 	bool result = true;
 
+	//render 3d
 	m_D3D->TurnZBufferOn();
+
 	m_Camera->SetPosition(0.0f, 0.0f, -10.0f);
-	// Clear the buffers to begin the scene.
 	m_D3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
 	
-	// Generate the view matrix based on the camera's position.
 	m_Camera->Render();
 
-	// Get the world, view, and projection matrices from the camera and d3d objects.
 	m_Camera->GetViewMatrix(viewMatrix);
 	
 	m_D3D->GetWorldMatrix(worldMatrix);
-	//camerViewMatrix = worldMatrix;
+
 	m_D3D->GetProjectionMatrix(projectionMatrix);
 	m_D3D->GetOrthoMatrix(orthoMatrix);
-	// Rotate the world matrix by the rotation value so that the triangle will spin.
 
-	//D3DXMatrixRotationY(&worldMatrix, rotation);
-
-	// Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
-	//m_Model->Render(m_D3D->GetDevice());
-
-	//// Render the model using the color shader.
-	//m_ColorShader->Render(m_D3D->GetDevice(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix);
-
-	// The texture shader is called now instead of the color shader to render the model. Notice it also takes the texture resource pointer 
-	// from the model so the texture shader has access to the texture from the model object.
-	// Render the model using the texture shader.
-	//m_TextureShader->Render(m_D3D->GetDevice(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, m_Model->GetTexture());
-
-	// Render the model using the light shader.
-	/*m_LightShader->Render(m_D3D->GetDevice(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, m_Model->GetTexture(),
-			      m_Light->GetDirection(), m_Light->GetAmbientColor(), m_Light->GetDiffuseColor(), m_Camera->GetPosition(), 
-			      m_Light->GetSpecularColor(), m_Light->GetSpecularPower());*/
-
+	//rednder 2d
 	m_D3D->TurnZBufferOff();
 
-	// Put the bitmap vertex and index buffers on the graphics pipeline to prepare them for drawing.
-	/*result = m_Bitmap->Render(m_D3D->GetDevice(), 100, 100);*/
-	// Render the text strings.
-
-	//if(!result)
-	//{
-	//	return false;
-	//}
-
-	// Render the bitmap using the texture shader.
-	//m_TextureShader->Render(m_D3D->GetDevice(), m_Bitmap->GetIndexCount(), camerViewMatrix, viewMatrix, orthoMatrix, m_Bitmap->GetTexture());
 	m_MouseDebugInfo->Render(m_D3D->GetDevice(), worldMatrix, orthoMatrix);
 	m_ProcesorInfo->Render(m_D3D->GetDevice(), worldMatrix, orthoMatrix);
 	m_RenderInfo->Render(m_D3D->GetDevice(), worldMatrix, orthoMatrix);
-	// Present the rendered scene to the screen.
+
 	m_D3D->EndScene();
 	return true;
 }
