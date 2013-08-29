@@ -17,6 +17,7 @@ LightShaderClass::LightShaderClass()
 	m_cameraPositionPtr = 0;
 	m_specularColorPtr = 0;
 	m_specularPowerPtr = 0;
+	m_color = 0;
 }
 
 LightShaderClass::LightShaderClass(const LightShaderClass& other)
@@ -55,12 +56,12 @@ void LightShaderClass::Shutdown()
 // The Render function now takes in the light direction and light diffuse color as inputs. These variables are then sent into the 
 // SetShaderParameters function and finally set inside the shader itself.
 void LightShaderClass::Render(ID3D10Device* device, int indexCount, D3DXMATRIX worldMatrix, D3DXMATRIX viewMatrix, D3DXMATRIX projectionMatrix, 
-			      ID3D10ShaderResourceView* texture, D3DXVECTOR3 lightDirection, D3DXVECTOR4 ambientColor, D3DXVECTOR4 diffuseColor,
+			      ID3D10ShaderResourceView* texture, D3DXVECTOR4 color, D3DXVECTOR3 lightDirection, D3DXVECTOR4 ambientColor, D3DXVECTOR4 diffuseColor,
 			      D3DXVECTOR3 cameraPosition, D3DXVECTOR4 specularColor, float specularPower)
 {
 	// Set the shader parameters that it will use for rendering.
 	SetShaderParameters(worldMatrix, viewMatrix, projectionMatrix, texture, lightDirection, ambientColor, diffuseColor, cameraPosition, specularColor,
-			    specularPower);
+			    specularPower, color);
 
 	// Now render the prepared buffers with the shader.
 	RenderShader(device, indexCount);
@@ -175,6 +176,8 @@ bool LightShaderClass::InitializeShader(ID3D10Device* device, HWND hwnd, WCHAR* 
 	m_specularColorPtr = m_effect->GetVariableByName("specularColor")->AsVector();
 	m_specularPowerPtr = m_effect->GetVariableByName("specularPower")->AsScalar();
 
+	m_color = m_effect->GetVariableByName("extracolor")->AsVector();
+
 	return true;
 }
 
@@ -199,6 +202,8 @@ void LightShaderClass::ShutdownShader()
 	m_worldMatrixPtr = 0;
 	m_viewMatrixPtr = 0;
 	m_projectionMatrixPtr = 0;
+
+	m_color = 0;
 
 	// Release the pointer to the shader layout.
 	if(m_layout)
@@ -260,7 +265,7 @@ void LightShaderClass::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND h
 // using the two new m_lightDirectionPtr and m_diffuseColorPtr pointers.
 void LightShaderClass::SetShaderParameters(D3DXMATRIX worldMatrix, D3DXMATRIX viewMatrix, D3DXMATRIX projectionMatrix, 
 					   ID3D10ShaderResourceView* texture, D3DXVECTOR3 lightDirection, D3DXVECTOR4 ambientColor, 
-					   D3DXVECTOR4 diffuseColor, D3DXVECTOR3 cameraPosition, D3DXVECTOR4 specularColor, float specularPower)
+					   D3DXVECTOR4 diffuseColor, D3DXVECTOR3 cameraPosition, D3DXVECTOR4 specularColor, float specularPower, D3DXVECTOR4 color)
 {
 	// Set the world matrix variable inside the shader.
 	m_worldMatrixPtr->SetMatrix((float*)&worldMatrix);
@@ -291,6 +296,8 @@ void LightShaderClass::SetShaderParameters(D3DXMATRIX worldMatrix, D3DXMATRIX vi
 
 	// Set the specular power of the light.
 	m_specularPowerPtr->SetFloat(specularPower);
+
+	m_color->SetFloatVector((float*)&color);
 
 	return;
 }

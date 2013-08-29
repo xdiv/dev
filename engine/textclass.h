@@ -38,6 +38,7 @@ public:
 	bool SetFps(int);
 	bool SetCpu(int);
 	bool SetTime(float);
+	bool SetRenderCount(int);
 
 private:
 	bool InitializeSentence(SentenceType**, int, ID3D10Device*);

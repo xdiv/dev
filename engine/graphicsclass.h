@@ -4,18 +4,20 @@
 #define _GRAPHICSCLASS_H_
 
 #include <windows.h>
+
 #include "d3dclass.h"
 #include "cameraclass.h"
+#include "textclass.h"
 #include "modelclass.h"
 #include "lightshaderclass.h"
 #include "lightclass.h"
-#include "bitmapclass.h"
-#include "textclass.h"
+#include "modellistclass.h"
+#include "frustumclass.h"
 
 // GLOBALS //
-const bool FULL_SCREEN = false;
-const bool VSYNC_ENABLED = false;
-const float SCREEN_DEPTH = 1000.0f;
+const bool FULL_SCREEN = true;
+const bool VSYNC_ENABLED = true;
+const float SCREEN_DEPTH = 10000.0f;
 const float SCREEN_NEAR = 0.1f;
 
 class GraphicsClass
@@ -32,6 +34,7 @@ public:
 
 	bool ShowDebugInfo(int ,int ,int ,int , float);
 	bool Render();
+	void RotateCamera(float, float ,float); 
 
 private:
 	D3DClass* m_D3D;
@@ -40,10 +43,12 @@ private:
 	LightShaderClass* m_LightShader;
 	LightClass* m_Light;
 
-	BitmapClass* m_Bitmap;
 	TextClass* m_MouseDebugInfo;
 	TextClass* m_ProcesorInfo;
 	TextClass* m_RenderInfo;
+
+	ModelListClass* m_ModelList;
+	FrustumClass* m_Frustum;
 };
 
 #endif

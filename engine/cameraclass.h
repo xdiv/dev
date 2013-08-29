@@ -15,6 +15,7 @@ public:
 
 	void SetPosition(float, float, float);
 	void SetRotation(float, float, float);
+	void MoveCamera(float divX, float divY);
 
 	D3DXVECTOR3 GetPosition();
 	D3DXVECTOR3 GetRotation();

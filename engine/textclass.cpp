@@ -98,7 +98,7 @@ bool TextClass::AddWord(char * text, int x, int y, float r, float g, float b )
 {
 	bool result;
 	// Initialize the first sentence.
-	result = InitializeSentence(&m_sentence2, 16, m_d3d);
+	result = InitializeSentence(&m_sentence2, 18, m_d3d);
 	if(!result)
 	{
 		return false;
@@ -518,7 +518,31 @@ bool TextClass::SetCpu(int cpu)
 	strcat_s(cpuString, "%");
 
 	// Update the sentence vertex buffer with the new string information.
-	result = UpdateSentence(m_sentence1, cpuString, 150, 20, 0.0f, 1.0f, 0.0f);
+	result = UpdateSentence(m_sentence1, cpuString, 200, 20, 0.0f, 1.0f, 0.0f);
+	if(!result)
+	{
+		return false;
+	}
+
+	return true;
+}
+
+bool TextClass::SetRenderCount(int cpu)
+{
+	char tempString[16];
+	char cpuString[16];
+	bool result;
+
+
+	// Convert the cpu integer to string format.
+	_itoa_s(cpu, tempString, 10);
+
+	// Setup the cpu string.
+	strcpy_s(cpuString, "Objects: ");
+	strcat_s(cpuString, tempString);
+
+	// Update the sentence vertex buffer with the new string information.
+	result = UpdateSentence(m_sentence2, cpuString, 200, 40, 0.0f, 1.0f, 0.0f);
 	if(!result)
 	{
 		return false;

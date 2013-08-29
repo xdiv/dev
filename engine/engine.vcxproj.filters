@@ -14,11 +14,11 @@
     <Filter Include="Core\graphics\shaders">
       <UniqueIdentifier>{88e554a2-9ca4-4e27-9c08-bd33b59dce7d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\system">
-      <UniqueIdentifier>{27eaac88-1251-4901-8d6f-cdc74b8c2624}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Models">
       <UniqueIdentifier>{bdc893fa-9360-4f4e-bc6f-2855b77195f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Utils">
+      <UniqueIdentifier>{27eaac88-1251-4901-8d6f-cdc74b8c2624}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -56,24 +56,31 @@
     <ClCompile Include="fontshaderclass.cpp">
       <Filter>Core\graphics\shaders</Filter>
     </ClCompile>
+    <ClCompile Include="inputclass.cpp">
+      <Filter>Core\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="soundclass.cpp">
+      <Filter>Core\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="cpuclass.cpp">
+      <Filter>Core\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="fpsclass.cpp">
+      <Filter>Core\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="timerclass.cpp">
+      <Filter>Core\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="frustumclass.cpp">
+      <Filter>Core\Utils</Filter>
+    </ClCompile>
     <ClCompile Include="textclass.cpp">
       <Filter>Models</Filter>
     </ClCompile>
-    <ClCompile Include="inputclass.cpp">
-      <Filter>Core\system</Filter>
+    <ClCompile Include="modellistclass.cpp">
+      <Filter>Core\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="soundclass.cpp">
-      <Filter>Core\system</Filter>
-    </ClCompile>
-    <ClCompile Include="cpuclass.cpp">
-      <Filter>Core\system</Filter>
-    </ClCompile>
-    <ClCompile Include="fpsclass.cpp">
-      <Filter>Core\system</Filter>
-    </ClCompile>
-    <ClCompile Include="timerclass.cpp">
-      <Filter>Core\system</Filter>
-    </ClCompile>
+    <ClCompile Include="positionclass.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="systemclass.h">
@@ -110,24 +117,31 @@
     <ClInclude Include="fontshaderclass.h">
       <Filter>Core\graphics\shaders</Filter>
     </ClInclude>
+    <ClInclude Include="inputclass.h">
+      <Filter>Core\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="soundclass.h">
+      <Filter>Core\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="cpuclass.h">
+      <Filter>Core\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="fpsclass.h">
+      <Filter>Core\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="timerclass.h">
+      <Filter>Core\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="frustumclass.h">
+      <Filter>Core\Utils</Filter>
+    </ClInclude>
     <ClInclude Include="textclass.h">
       <Filter>Models</Filter>
     </ClInclude>
-    <ClInclude Include="inputclass.h">
-      <Filter>Core\system</Filter>
+    <ClInclude Include="modellistclass.h">
+      <Filter>Core\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="soundclass.h">
-      <Filter>Core\system</Filter>
-    </ClInclude>
-    <ClInclude Include="cpuclass.h">
-      <Filter>Core\system</Filter>
-    </ClInclude>
-    <ClInclude Include="fpsclass.h">
-      <Filter>Core\system</Filter>
-    </ClInclude>
-    <ClInclude Include="timerclass.h">
-      <Filter>Core\system</Filter>
-    </ClInclude>
+    <ClInclude Include="positionclass.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="color.fx">

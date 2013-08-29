@@ -38,6 +38,22 @@ void CameraClass::SetRotation(float x, float y, float z)
 	return;
 }
 
+void CameraClass::MoveCamera(float divX, float divY)
+{
+	float radius = divX;
+	float theta = m_rotationY;
+	float phi = m_rotationX;
+
+		//These equations are from the wikipedia page, linked above
+	float xMove = radius*sinf(phi)*cosf(theta);
+	float yMove = radius*sinf(phi)*sinf(theta);
+	float zMove = radius*cosf(phi);
+
+	m_positionX += xMove;
+	m_positionY += yMove;
+	m_positionZ += zMove;
+}
+
 //The GetPosition and GetRotation functions return the location and rotation of the camera to calling functions.
 D3DXVECTOR3 CameraClass::GetPosition()
 {

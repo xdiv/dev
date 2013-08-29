@@ -218,7 +218,9 @@ bool SystemClass::Frame()
 	// After the input device updates have been read we update the GraphicsClass with the location of the mouse so it can render that
 	// in text on the screen.
 	// Get the location of the mouse from the input object,
-	m_Input->GetMouseLocation(mouseX, mouseY);
+	m_Input->GetMouseLocation(mouseY, mouseX);
+
+	m_Graphics->RotateCamera(mouseX*0.1f, mouseY*0.1f, 0.0f);
 
 	// Do the frame processing for the graphics object.
 	m_Fps->Frame(); m_Fps->Frame(); m_Cpu->Frame();
@@ -302,8 +304,8 @@ void SystemClass::InitializeWindows(int& screenWidth, int& screenHeight)
 	else
 	{
 		// If windowed then set it to 800x600 resolution.
-		screenWidth  = 800;
-		screenHeight = 600;
+		screenWidth  = 1600;
+		screenHeight = 900;
 
 		// Place the window in the middle of the screen.
 		posX = (GetSystemMetrics(SM_CXSCREEN) - screenWidth)  / 2;
