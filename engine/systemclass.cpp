@@ -97,19 +97,19 @@ bool SystemClass::Initialize()
 	}
 
 	// Create the sound object.
-	m_Sound = new SoundClass;
-	if(!m_Sound)
-	{
-		return false;
-	}
- 
-	// Initialize the sound object.
-	result = m_Sound->Initialize(m_hwnd);
-	if(!result)
-	{
-		MessageBox(m_hwnd, L"Could not initialize Direct Sound.", L"Error", MB_OK);
-		return false;
-	}
+	//m_Sound = new SoundClass;
+	//if(!m_Sound)
+	//{
+	//	return false;
+	//}
+ //
+	//// Initialize the sound object.
+	//result = m_Sound->Initialize(m_hwnd);
+	//if(!result)
+	//{
+	//	MessageBox(m_hwnd, L"Could not initialize Direct Sound.", L"Error", MB_OK);
+	//	return false;
+	//}
 
 	//Create and initialize the FpsClass.
 	// Create the fps object.
@@ -205,6 +205,7 @@ bool SystemClass::Frame()
 {
 	bool result;
 	int mouseX, mouseY;
+	int xDif, yDIf;
 
 	// During the Frame function we call the Input object's own Frame function to update the states of the keyboard and mouse. This call
 	// can fail so we need to check the return value.
@@ -218,10 +219,11 @@ bool SystemClass::Frame()
 	// After the input device updates have been read we update the GraphicsClass with the location of the mouse so it can render that
 	// in text on the screen.
 	// Get the location of the mouse from the input object,
-	m_Input->GetMouseLocation(mouseX, mouseY);
+	m_Input->GetMouseLocation(mouseY, mouseX);
+	m_Input->GetMouseLocationDif(xDif, yDIf);
 
 	// Do the frame processing for the graphics object.
-	m_Fps->Frame(); m_Fps->Frame(); m_Cpu->Frame();
+	m_Fps->Frame(); m_Timer->Frame(); m_Cpu->Frame();
 	result = m_Graphics->ShowDebugInfo(mouseX, mouseY, m_Fps->GetFps(), m_Cpu->GetCpuPercentage(), m_Timer->GetTime());
 	//result = m_Graphics->Frame(mouseX, mouseY);
 	if(!result)
@@ -229,6 +231,8 @@ bool SystemClass::Frame()
 		return false;
 	}
 
+	m_Graphics->RotateCamera(xDif*0.1f, yDIf*0.1f, 0.0f);
+	//m_Graphics->RotateCamera(mouseX*0.1f, mouseY*0.1f, 0.0f);
 	// Finally render the graphics to the screen.
 	result = m_Graphics->Render();
 	if(!result)
@@ -302,8 +306,8 @@ void SystemClass::InitializeWindows(int& screenWidth, int& screenHeight)
 	else
 	{
 		// If windowed then set it to 800x600 resolution.
-		screenWidth  = 800;
-		screenHeight = 600;
+		screenWidth  = 1600;
+		screenHeight = 900;
 
 		// Place the window in the middle of the screen.
 		posX = (GetSystemMetrics(SM_CXSCREEN) - screenWidth)  / 2;

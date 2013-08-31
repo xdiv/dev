@@ -13,6 +13,7 @@ float3 lightDirection;
 float3 cameraPosition;
 float4 specularColor;
 float specularPower;
+float4 extracolor;
 
 // SAMPLE STATES //
 SamplerState SampleType
@@ -20,6 +21,11 @@ SamplerState SampleType
     Filter = MIN_MAG_MIP_LINEAR;
     AddressU = Wrap;
     AddressV = Wrap;
+};
+
+BlendState AlphaBlendingState
+{
+    BlendEnable[0] = false;
 };
 
 // Both structures now have a 3 float normal vector. The normal vector is used for calculating the amount of light by using the angle 
@@ -92,6 +98,8 @@ float4 LightPixelShader(PixelInputType input) : SV_Target
     // Sample the pixel color from the texture using the sampler at this texture coordinate location.
     textureColor = shaderTexture.Sample(SampleType, input.tex);
 
+	textureColor = textureColor * extracolor * 2.0f;
+
 	// Set the default output color to the ambient light value for all pixels.
     color = ambientColor;
 
@@ -134,6 +142,7 @@ technique10 LightTechnique
 {
     pass pass0
     {
+		SetBlendState(AlphaBlendingState, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
         SetVertexShader(CompileShader(vs_4_0, LightVertexShader()));
         SetPixelShader(CompileShader(ps_4_0, LightPixelShader()));
         SetGeometryShader(NULL);

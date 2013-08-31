@@ -38,6 +38,41 @@ void CameraClass::SetRotation(float x, float y, float z)
 	return;
 }
 
+void CameraClass::RotateByDif(float x, float y, float z)
+{
+	m_rotationX += x;
+
+	if(m_rotationX > 360.0f)
+		m_rotationX -= 360;
+	else if(m_rotationX < -360.0f)
+		m_rotationX += 360;
+
+	if( (m_rotationX < -90 && m_rotationX > -240) 
+		|| (m_rotationX > 90 && m_rotationX < 240))
+	{
+		y *= -1;
+	}
+
+	m_rotationY += y;
+	m_rotationZ += z;
+}
+
+void CameraClass::MoveCamera(float divX, float divY)
+{
+	float radius = divX;
+	float theta = m_rotationY;
+	float phi = m_rotationX;
+
+		//These equations are from the wikipedia page, linked above
+	float xMove = radius*sinf(phi)*cosf(theta);
+	float yMove = radius*sinf(phi)*sinf(theta);
+	float zMove = radius*cosf(phi);
+
+	m_positionX += xMove;
+	m_positionY += yMove;
+	m_positionZ += zMove;
+}
+
 //The GetPosition and GetRotation functions return the location and rotation of the camera to calling functions.
 D3DXVECTOR3 CameraClass::GetPosition()
 {
