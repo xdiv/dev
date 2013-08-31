@@ -3,9 +3,10 @@
 #define _MODELCLASS_H_
 
 #include <fstream>
-using namespace std;
+//using namespace std;
 
 #include "textureclass.h"
+#include "objreader.h"
 
 class ModelClass
 {
@@ -19,19 +20,19 @@ private:
 		D3DXVECTOR3 normal;
 	};
 
-	struct ModelType
-	{
-		float x, y, z;
-		float tu, tv;
-		float nx, ny, nz;
-	};
+	//struct ModelType
+	//{
+	//	float x, y, z;
+	//	float tu, tv;
+	//	float nx, ny, nz;
+	//};
 
 public:
 	ModelClass();
 	ModelClass(const ModelClass&);
 	~ModelClass();
 
-	bool Initialize(ID3D10Device*, char*, WCHAR*);
+	bool Initialize(ID3D10Device*, WCHAR*, WCHAR*);
 	void Shutdown();
 	void Render(ID3D10Device*);
 
@@ -51,10 +52,12 @@ private:
 	bool LoadModel(char*);
 	void ReleaseModel();
 
-	ModelType* m_model;
+	
 
 private:
+	Vertices* m_model;
 	ID3D10Buffer *m_vertexBuffer, *m_indexBuffer;
+	ObjReader * read;
 	int m_vertexCount, m_indexCount;
 //The m_Texture variable is used for loading, releasing, and accessing the texture resource for this model.
 

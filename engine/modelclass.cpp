@@ -7,6 +7,7 @@ ModelClass::ModelClass()
 	m_indexBuffer = 0;
 	m_Texture = 0;
 	m_model = 0;
+	read = 0;
 }
 
 
@@ -20,16 +21,27 @@ ModelClass::~ModelClass()
 }
 //Initialize now takes as input the file name of the .dds texture that the model will be using.
 
-bool ModelClass::Initialize(ID3D10Device* device, char* modelFilename, WCHAR* textureFilename)
+bool ModelClass::Initialize(ID3D10Device* device, WCHAR* modelFilename, WCHAR* textureFilename)
 {
 	bool result;
-
+	read = new ObjReader();
+	//m_vertexCount;
 	// Load in the model data.
-	result = LoadModel(modelFilename);
+
+	/*result = LoadModel(modelFilename);
 	if(!result)
+	{
+	return false;
+	}*/
+	if(!read->ReadFileStructure(modelFilename))
 	{
 		return false;
 	}
+	if(m_vertexCount == 0)
+	{
+		m_model = new Vertices();
+	}
+	read->GetTriangeleList(m_model, m_vertexCount);
 
 	// Initialize the vertex and index buffer that hold the geometry for the triangle.
 	result = InitializeBuffers(device);
@@ -276,7 +288,7 @@ bool ModelClass::LoadModel(char* filename)
 	m_indexCount = m_vertexCount;
 
 	// Create the model using the vertex count that was read in.
-	m_model = new ModelType[m_vertexCount];
+	m_model = new Vertices[m_vertexCount];
 	if(!m_model)
 	{
 		return false;

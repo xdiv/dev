@@ -80,7 +80,12 @@
     <ClCompile Include="modellistclass.cpp">
       <Filter>Core\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="positionclass.cpp" />
+    <ClCompile Include="objreader.cpp">
+      <Filter>Core\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="positionclass.cpp">
+      <Filter>Core\Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="systemclass.h">
@@ -141,7 +146,12 @@
     <ClInclude Include="modellistclass.h">
       <Filter>Core\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="positionclass.h" />
+    <ClInclude Include="objreader.h">
+      <Filter>Core\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="positionclass.h">
+      <Filter>Core\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="color.fx">
