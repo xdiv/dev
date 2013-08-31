@@ -162,7 +162,7 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	}
 
 	// Initialize the model list object.
-	result = m_ModelList->Initialize(25);
+	result = m_ModelList->Initialize(2500);
 	if(!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the model list object.", L"Error", MB_OK);
@@ -273,7 +273,7 @@ bool GraphicsClass::ShowDebugInfo(int mouseX,int mouseY,int fps,int cpuUsageInPe
 		return false;
 	}
 
-	result = m_RenderInfo->SetTime(fps);
+	result = m_RenderInfo->SetTime(time);
 	if(!result)
 	{
 		return false;
@@ -294,7 +294,8 @@ void GraphicsClass::RotateCamera(float x, float y, float z)
 {
 	// Set the rotation of the camera.
 	//x aukstis, y plotis, z gylis;
-	m_Camera->SetRotation(x, y, z);
+	//m_Camera->SetRotation(x, y, z);
+	m_Camera->RotateByDif(y, x, z);
 }
 
 void GraphicsClass::switchMode(bool isFullScreen)
@@ -311,13 +312,9 @@ bool GraphicsClass::Render()
 	D3DXVECTOR4 color;
 
 	// Set the initial position of the camera.
-	
-	m_D3D->TurnZBufferOn();
 	//render 3d
 	m_Camera->Render();
 	m_D3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
-	
-	
 
 	m_D3D->GetWorldMatrix(worldMatrix);
 	m_Camera->GetViewMatrix(viewMatrix);
@@ -359,7 +356,7 @@ bool GraphicsClass::Render()
 	}
 
 	//rednder 2d
-	m_D3D->TurnZBufferOff();
+	//m_D3D->TurnZBufferOff();
 
 	result = m_ProcesorInfo->SetRenderCount(renderCount);
 	if(!result)
@@ -370,7 +367,7 @@ bool GraphicsClass::Render()
 	m_MouseDebugInfo->Render(m_D3D->GetDevice(), worldMatrix, orthoMatrix);
 	m_ProcesorInfo->Render(m_D3D->GetDevice(), worldMatrix, orthoMatrix);
 	m_RenderInfo->Render(m_D3D->GetDevice(), worldMatrix, orthoMatrix);
-	m_D3D->TurnZBufferOn();
+	//m_D3D->TurnZBufferOn();
 
 	m_D3D->EndScene();
 	return true;

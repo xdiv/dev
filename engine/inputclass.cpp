@@ -222,8 +222,10 @@ bool InputClass::ReadMouse()
 void InputClass::ProcessInput()
 {
 	// Update the location of the mouse cursor based on the change of the mouse location during the frame.
-	m_mouseX += m_mouseState.lX;
-	m_mouseY += m_mouseState.lY;
+	m_xDif = m_mouseState.lX;
+	m_yDif = m_mouseState.lY;
+	m_mouseX += m_xDif;
+	m_mouseY += m_yDif;
 
 	// Ensure the mouse location doesn't exceed the screen width or height.
 	//if(m_mouseX < 0)  { m_mouseX = 0; }
@@ -255,4 +257,10 @@ void InputClass::GetMouseLocation(int& mouseX, int& mouseY)
 	mouseX = m_mouseX;
 	mouseY = m_mouseY;
 	return;
+}
+
+void InputClass::GetMouseLocationDif( int & x, int& y )
+{
+	x = m_xDif;
+	y = m_yDif;
 }

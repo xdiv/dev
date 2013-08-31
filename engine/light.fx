@@ -98,7 +98,7 @@ float4 LightPixelShader(PixelInputType input) : SV_Target
     // Sample the pixel color from the texture using the sampler at this texture coordinate location.
     textureColor = shaderTexture.Sample(SampleType, input.tex);
 
-	textureColor = textureColor *0.5f + extracolor * 0.5f;
+	textureColor = textureColor * extracolor * 2.0f;
 
 	// Set the default output color to the ambient light value for all pixels.
     color = ambientColor;

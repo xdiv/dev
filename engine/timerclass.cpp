@@ -46,7 +46,7 @@ void TimerClass::Frame()
 
 	timeDifference = (float)(currentTime - m_startTime);
 
-	m_frameTime = timeDifference / m_ticksPerMs;
+	m_frameTime = timeDifference;// / m_ticksPerMs;
 
 	m_startTime = currentTime;
 

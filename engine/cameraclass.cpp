@@ -38,6 +38,25 @@ void CameraClass::SetRotation(float x, float y, float z)
 	return;
 }
 
+void CameraClass::RotateByDif(float x, float y, float z)
+{
+	m_rotationX += x;
+
+	if(m_rotationX > 360.0f)
+		m_rotationX -= 360;
+	else if(m_rotationX < -360.0f)
+		m_rotationX += 360;
+
+	if( (m_rotationX < -90 && m_rotationX > -240) 
+		|| (m_rotationX > 90 && m_rotationX < 240))
+	{
+		y *= -1;
+	}
+
+	m_rotationY += y;
+	m_rotationZ += z;
+}
+
 void CameraClass::MoveCamera(float divX, float divY)
 {
 	float radius = divX;

@@ -21,6 +21,7 @@ public:
 
 	bool IsEscapePressed();
 	void GetMouseLocation(int&, int&);
+	void GetMouseLocationDif(int &, int&);
 
 private:
 	bool ReadKeyboard();
@@ -36,7 +37,7 @@ private:
 	DIMOUSESTATE m_mouseState;
 
 	int m_screenWidth, m_screenHeight;
-	int m_mouseX, m_mouseY;
+	int m_mouseX, m_mouseY, m_xDif, m_yDif;
 };
 
 #endif
