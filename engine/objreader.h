@@ -27,7 +27,7 @@ private:
 public:
 	ObjReader(void);
 	~ObjReader(void);
-	void GetTriangeleList(Vertices * , int &, bool remake = false);
+	bool GetTriangeleList(Vertices ** , int &, bool remake = false);
 	bool ReadFileStructure(WCHAR *);
 
 private:

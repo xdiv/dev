@@ -70,8 +70,8 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	m_ModelList = 0;
 	m_Frustum = 0;
 	
-	//result = m_Model->Initialize(m_D3D->GetDevice(), "../Engine/data/cube.txt", L"../Engine/data/seafloor.dds");
-	result = m_Model->Initialize(m_D3D->GetDevice(), L"../Engine/data/test2.obj", L"../Engine/data/seafloor.dds");
+	//result = m_Model->Initialize(m_D3D->GetDevice(), L"../Engine/data/cube.txt", L"../Engine/data/seafloor.dds");
+	result = m_Model->Initialize(m_D3D->GetDevice(), L"../Engine/data/untitled.obj", L"../Engine/data/seafloor.dds");
 	if(!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the model object.", L"Error", MB_OK);
@@ -309,7 +309,7 @@ bool GraphicsClass::Render()
 	int modelCount, renderCount, index;
 	float positionX, positionY, positionZ, radius;
 	bool result = true, renderModels;
-	D3DXVECTOR4 color;
+	D3DXVECTOR4 color(1.0f, 1.0f, 1.0f, 1.0f);
 
 	// Set the initial position of the camera.
 	//render 3d
@@ -321,25 +321,25 @@ bool GraphicsClass::Render()
 	m_D3D->GetProjectionMatrix(projectionMatrix);
 	m_D3D->GetOrthoMatrix(orthoMatrix);
 
-	m_Frustum->ConstructFrustum(SCREEN_DEPTH, projectionMatrix, viewMatrix);
-	modelCount = m_ModelList->GetModelCount();
+	//m_Frustum->ConstructFrustum(SCREEN_DEPTH, projectionMatrix, viewMatrix);
+	//modelCount = m_ModelList->GetModelCount();
 
-	renderCount = 0;
+	//renderCount = 0;
 
-	for(int index = 0; index< modelCount; index++)
-	{
-		m_ModelList->GetData(index, positionX, positionY, positionZ, color);
-		radius = 1.0f;
+	//for(int index = 0; index< modelCount; index++)
+	//{
+	//	m_ModelList->GetData(index, positionX, positionY, positionZ, color);
+	//	radius = 1.0f;
 
-		renderModels = m_Frustum->CheckSphere(positionX, positionY, positionZ, radius);
+	//	renderModels = m_Frustum->CheckSphere(positionX, positionY, positionZ, radius);
 
-		// If it can be seen then render it, if not skip this model and check the next sphere.
-		if(renderModels)
-		{
-			// Move the model to the location it should be rendered at.
-			D3DXMatrixTranslation(&worldMatrix, positionX, positionY, positionZ); 
+	//	// If it can be seen then render it, if not skip this model and check the next sphere.
+	//	if(renderModels)
+	//	{
+	//		// Move the model to the location it should be rendered at.
+	//		D3DXMatrixTranslation(&worldMatrix, positionX, positionY, positionZ); 
 
-			// Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
+	//		// Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
 			m_Model->Render(m_D3D->GetDevice());
 
 			// Render the model using the light shader.
@@ -347,22 +347,22 @@ bool GraphicsClass::Render()
 					      m_Model->GetTexture(), color, m_Light->GetDirection(), m_Light->GetAmbientColor(), m_Light->GetDiffuseColor(), m_Camera->GetPosition(), 
 			      m_Light->GetSpecularColor(), m_Light->GetSpecularPower());
 
-			// Reset to the original world matrix.
-			m_D3D->GetWorldMatrix(worldMatrix);
+	//		// Reset to the original world matrix.
+	//		m_D3D->GetWorldMatrix(worldMatrix);
 
-			// Since this model was rendered then increase the count for this frame.
-			renderCount++;
-		}
-	}
+	//		// Since this model was rendered then increase the count for this frame.
+	//		renderCount++;
+	//	}
+	//}
 
 	//rednder 2d
 	//m_D3D->TurnZBufferOff();
 
-	result = m_ProcesorInfo->SetRenderCount(renderCount);
-	if(!result)
-	{
-		return false;
-	}
+	//result = m_ProcesorInfo->SetRenderCount(renderCount);
+	//if(!result)
+	//{
+	//	return false;
+	//}
 
 	m_MouseDebugInfo->Render(m_D3D->GetDevice(), worldMatrix, orthoMatrix);
 	m_ProcesorInfo->Render(m_D3D->GetDevice(), worldMatrix, orthoMatrix);

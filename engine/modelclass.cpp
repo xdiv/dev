@@ -37,11 +37,13 @@ bool ModelClass::Initialize(ID3D10Device* device, WCHAR* modelFilename, WCHAR* t
 	{
 		return false;
 	}
-	if(m_vertexCount == 0)
+
+	if(!read->GetTriangeleList(&m_model, m_vertexCount))
 	{
-		m_model = new Vertices();
+		return false;
 	}
-	read->GetTriangeleList(m_model, m_vertexCount);
+
+	m_indexCount = m_vertexCount;
 
 	// Initialize the vertex and index buffer that hold the geometry for the triangle.
 	result = InitializeBuffers(device);
@@ -258,7 +260,7 @@ void ModelClass::ReleaseTexture()
 	return;
 }
 
-bool ModelClass::LoadModel(char* filename)
+bool ModelClass::LoadModel(WCHAR* filename)
 {
 	ifstream fin;
 	char input;

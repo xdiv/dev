@@ -61,13 +61,13 @@ bool ObjReader::ReadFileStructure(WCHAR * filename)
 		{
 			vertexCount++; 
 			fs >> a >> b >> c;
-			v->push_back(D3DXVECTOR3(a, b, c * -1.0f));
+			v->push_back(D3DXVECTOR3(a, b, c));
 		} else if(prev == 'v' && input == 'n' )
 		{
 			normalCount++; 
 			fs >> a >> b >> c;
-			vn->push_back(D3DXVECTOR3(a , b, c));
-		}else if(input == 'f')
+			vn->push_back(D3DXVECTOR3(a, b, c));
+		}else if(prev =='f' && input == ' ')
 		{
 			faceCount++;
 			vector<Point3D> list;
@@ -105,7 +105,7 @@ bool ObjReader::ReadFileStructure(WCHAR * filename)
 //ið turimø duomenø sukuria TrinagleList masyvà, ir gràþina pinteri á já.
 //Jei masyvas jau sukurtas, tiesiog gràþina masyvà.
 //jei "remake" true, masyvà perkruria
-void ObjReader::GetTriangeleList(Vertices * list, int & count, bool remake)
+bool ObjReader::GetTriangeleList(Vertices ** list, int & count, bool remake)
 {
 	if(m_vertices == 0 || remake)
 	{
@@ -114,21 +114,38 @@ void ObjReader::GetTriangeleList(Vertices * list, int & count, bool remake)
 		
 		for (int i = 0; i< faceCount; i++)
 		{
-			for (int j = 0, size = (f->at(i)).size(); j + 3 < size; j++)
+			if((f->at(i)).size() > 3)
 			{
+				return false;
+			}
+
+			for (int j = (f->at(i)).size()-1, size = 0; j >= size; j--)
+			{
+				
+
 				Vertices vertice;
-				total++;
-				vertice.nx = vn->at((f->at(i)).at(j).vn).x;
-				vertice.ny = vn->at((f->at(i)).at(j).v).y;
-				vertice.nz = vn->at((f->at(i)).at(j).v).z;
 
-				vertice.x = v->at((f->at(i)).at(j).v).x;
-				vertice.y = v->at((f->at(i)).at(j).v).y;
-				vertice.z = v->at((f->at(i)).at(j).v).z;
+				total ++;
 
-				vertice.tu = vt->at((f->at(i)).at(j).vt).x;
-				vertice.tv = vt->at((f->at(i)).at(j).vt).y;
+				vertice.nx = vn->at((f->at(i)).at(j).vn-1).x;
+				vertice.ny = vn->at((f->at(i)).at(j).vn-1).y;
+				vertice.nz = vn->at((f->at(i)).at(j).vn-1).z;
+
+				vertice.x = v->at((f->at(i)).at(j).v-1).x;
+				vertice.y = v->at((f->at(i)).at(j).v-1).y;
+				vertice.z = v->at((f->at(i)).at(j).v-1).z;
+
+				vertice.tu = vt->at((f->at(i)).at(j).vt-1).x;
+				vertice.tv = vt->at((f->at(i)).at(j).vt-1).y;
 				invList.push_back(vertice);
+
+				//jei ka majai :)
+				//if(goNeg >= 3 && j+1 < size)
+				//{
+				//	j = j-2;
+				//	goNeg = 0;
+				//}
+
 			}
 		}
 
@@ -139,12 +156,23 @@ void ObjReader::GetTriangeleList(Vertices * list, int & count, bool remake)
 		}
 
 		m_vertices = new Vertices[total];
-		for(int i = total-1; i>0; i--)
+		/*for(int i = total; i>0; i--)
 		{
-			m_vertices[total-i] = invList[i];
-		}
+		m_vertices[total-i] = invList[i-1];
+		}*/
+		for(int i = 0; i < total; i++ )
+			m_vertices[i] = invList[i];
+		/*ofstream out;
+		out.open("debug.txt");
+		for(int i = 0; i < total; i++)
+		{
+		out << invList[i].x << " "<< invList[i].y << " "<< invList[i].z << " "<< invList[i].tu << " "<< invList[i].tv << " "
+		<< invList[i].nx << " "<< invList[i].ny << " "<< invList[i].nz << "\n";
+		}*/
+		
 
 	}
 	count = total;
-	list = m_vertices;
+	*list = m_vertices;
+	return true;
 }

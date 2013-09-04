@@ -49,7 +49,7 @@ private:
 
 	bool LoadTexture(ID3D10Device*, WCHAR*);
 	void ReleaseTexture();
-	bool LoadModel(char*);
+	bool LoadModel(WCHAR*);
 	void ReleaseModel();
 
 	
